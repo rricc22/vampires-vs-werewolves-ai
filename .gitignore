@@ -24,3 +24,15 @@ Thumbs.db
 
 # Test outputs
 *.pyc
+
+# Go binaries
+server/twilight-master/twilight
+
+# OpenCode
+.opencode/
+
+# Game logs
+logs/
+
+# Temporary test files
+test_coordinates.py
