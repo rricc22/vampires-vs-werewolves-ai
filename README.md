@@ -121,6 +121,17 @@ All tests passed! ✓
 - Go 1.16+ (for server)
 - No external Python dependencies (stdlib only)
 
+### Building the Server
+
+If the compiled binary isn't present, build it:
+
+```bash
+cd server/twilight-master
+go build -o twilight .
+```
+
+The binary is excluded from git to keep the repository clean.
+
 ## ✅ Recent Improvements
 
 ### Suicidal Attack Fix (2025-11-04)
