@@ -23,7 +23,7 @@ sleep 1
 # Start the server
 echo -e "${YELLOW}📡 Starting game server...${NC}"
 cd server/twilight-master
-./twilight -map maps/testmap.xml &
+go run . -map maps/testmap.xml &
 SERVER_PID=$!
 cd ../..
 
