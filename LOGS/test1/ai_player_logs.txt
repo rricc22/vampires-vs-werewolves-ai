@@ -1,0 +1,927 @@
+socket: <socket.socket fd=3, family=2, type=1, proto=0, laddr=('127.0.0.1', 47860), raddr=('127.0.0.1', 5555)>
+Connected as AlphaBetaAI_v1
+Received: set
+Received: hum
+Received: hme
+Received: map
+Game initialized, starting main loop...
+Received: upd
+
+============================================================
+Turn 1
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=3, total_opponent=3)
+Our groups: 1
+  • 3 units at (3,2)
+Opponent groups: 1
+Computing move...
+Depth 1: value=92.80, nodes=8
+Depth 2: value=2.00, nodes=30
+Depth 3: value=6.00, nodes=166
+Depth 4: value=4.00, nodes=448
+Search complete: depth=4, nodes=448, time=0.026s
+Move computed in 0.026s
+→ Single-group move: 3 units from (3,2) to (2,2)
+Received: upd
+
+============================================================
+Turn 2
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (2,2)
+Opponent groups: 1
+Computing move...
+Depth 1: value=6.00, nodes=8
+Depth 2: value=4.00, nodes=36
+Depth 3: value=4.00, nodes=200
+Depth 4: value=0.00, nodes=477
+Search complete: depth=4, nodes=477, time=0.026s
+Move computed in 0.026s
+→ Single-group move: 4 units from (2,2) to (1,2)
+Received: upd
+
+============================================================
+Turn 3
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,2)
+Opponent groups: 1
+Computing move...
+Depth 1: value=5.33, nodes=8
+Depth 2: value=0.00, nodes=52
+Depth 3: value=0.00, nodes=242
+Depth 4: value=0.00, nodes=711
+Search complete: depth=4, nodes=711, time=0.039s
+Move computed in 0.039s
+→ Single-group move: 4 units from (1,2) to (1,3)
+Received: upd
+
+============================================================
+Turn 4
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,3)
+Opponent groups: 1
+Computing move...
+Depth 1: value=4.00, nodes=8
+Depth 2: value=0.00, nodes=45
+Depth 3: value=0.00, nodes=161
+Depth 4: value=0.00, nodes=923
+Search complete: depth=4, nodes=923, time=0.051s
+Move computed in 0.051s
+→ Single-group move: 4 units from (1,3) to (1,4)
+Received: upd
+
+============================================================
+Turn 5
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,4)
+Opponent groups: 1
+Computing move...
+Depth 1: value=5.33, nodes=8
+Depth 2: value=0.00, nodes=66
+Depth 3: value=0.00, nodes=314
+Depth 4: value=0.00, nodes=1074
+Search complete: depth=4, nodes=1074, time=0.058s
+Move computed in 0.058s
+→ Single-group move: 4 units from (1,4) to (1,3)
+Received: upd
+
+============================================================
+Turn 6
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,3)
+Opponent groups: 1
+Computing move...
+Depth 1: value=4.00, nodes=8
+Depth 2: value=0.00, nodes=45
+Depth 3: value=0.00, nodes=161
+Depth 4: value=0.00, nodes=923
+Search complete: depth=4, nodes=923, time=0.051s
+Move computed in 0.051s
+→ Single-group move: 4 units from (1,3) to (1,4)
+Received: upd
+
+============================================================
+Turn 7
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,4)
+Opponent groups: 1
+Computing move...
+Depth 1: value=5.33, nodes=8
+Depth 2: value=0.00, nodes=66
+Depth 3: value=0.00, nodes=314
+Depth 4: value=0.00, nodes=1074
+Search complete: depth=4, nodes=1074, time=0.058s
+Move computed in 0.058s
+→ Single-group move: 4 units from (1,4) to (1,3)
+Received: upd
+
+============================================================
+Turn 8
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,3)
+Opponent groups: 1
+Computing move...
+Depth 1: value=4.00, nodes=8
+Depth 2: value=0.00, nodes=45
+Depth 3: value=0.00, nodes=161
+Depth 4: value=0.00, nodes=923
+Search complete: depth=4, nodes=923, time=0.050s
+Move computed in 0.050s
+→ Single-group move: 4 units from (1,3) to (1,4)
+Received: upd
+
+============================================================
+Turn 9
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,4)
+Opponent groups: 1
+Computing move...
+Depth 1: value=5.33, nodes=8
+Depth 2: value=0.00, nodes=66
+Depth 3: value=0.00, nodes=314
+Depth 4: value=0.00, nodes=1074
+Search complete: depth=4, nodes=1074, time=0.058s
+Move computed in 0.058s
+→ Single-group move: 4 units from (1,4) to (1,3)
+Received: upd
+
+============================================================
+Turn 10
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,3)
+Opponent groups: 1
+Computing move...
+Depth 1: value=4.00, nodes=8
+Depth 2: value=0.00, nodes=45
+Depth 3: value=0.00, nodes=161
+Depth 4: value=0.00, nodes=923
+Search complete: depth=4, nodes=923, time=0.052s
+Move computed in 0.052s
+→ Single-group move: 4 units from (1,3) to (1,4)
+Received: upd
+
+============================================================
+Turn 11
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,4)
+Opponent groups: 1
+Computing move...
+Depth 1: value=5.33, nodes=8
+Depth 2: value=0.00, nodes=66
+Depth 3: value=0.00, nodes=314
+Depth 4: value=0.00, nodes=1074
+Search complete: depth=4, nodes=1074, time=0.059s
+Move computed in 0.059s
+→ Single-group move: 4 units from (1,4) to (1,3)
+Received: upd
+
+============================================================
+Turn 12
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,3)
+Opponent groups: 1
+Computing move...
+Depth 1: value=4.00, nodes=8
+Depth 2: value=0.00, nodes=45
+Depth 3: value=0.00, nodes=161
+Depth 4: value=0.00, nodes=923
+Search complete: depth=4, nodes=923, time=0.051s
+Move computed in 0.051s
+→ Single-group move: 4 units from (1,3) to (1,4)
+Received: upd
+
+============================================================
+Turn 13
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,4)
+Opponent groups: 1
+Computing move...
+Depth 1: value=5.33, nodes=8
+Depth 2: value=0.00, nodes=66
+Depth 3: value=0.00, nodes=314
+Depth 4: value=0.00, nodes=1074
+Search complete: depth=4, nodes=1074, time=0.059s
+Move computed in 0.059s
+→ Single-group move: 4 units from (1,4) to (1,3)
+Received: upd
+
+============================================================
+Turn 14
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,3)
+Opponent groups: 1
+Computing move...
+Depth 1: value=4.00, nodes=8
+Depth 2: value=0.00, nodes=45
+Depth 3: value=0.00, nodes=161
+Depth 4: value=0.00, nodes=923
+Search complete: depth=4, nodes=923, time=0.052s
+Move computed in 0.052s
+→ Single-group move: 4 units from (1,3) to (1,4)
+Received: upd
+
+============================================================
+Turn 15
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,4)
+Opponent groups: 1
+Computing move...
+Depth 1: value=5.33, nodes=8
+Depth 2: value=0.00, nodes=66
+Depth 3: value=0.00, nodes=314
+Depth 4: value=0.00, nodes=1074
+Search complete: depth=4, nodes=1074, time=0.063s
+Move computed in 0.063s
+→ Single-group move: 4 units from (1,4) to (1,3)
+Received: upd
+
+============================================================
+Turn 16
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,3)
+Opponent groups: 1
+Computing move...
+Depth 1: value=4.00, nodes=8
+Depth 2: value=0.00, nodes=45
+Depth 3: value=0.00, nodes=161
+Depth 4: value=0.00, nodes=923
+Search complete: depth=4, nodes=923, time=0.051s
+Move computed in 0.051s
+→ Single-group move: 4 units from (1,3) to (1,4)
+Received: upd
+
+============================================================
+Turn 17
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,4)
+Opponent groups: 1
+Computing move...
+Depth 1: value=5.33, nodes=8
+Depth 2: value=0.00, nodes=66
+Depth 3: value=0.00, nodes=314
+Depth 4: value=0.00, nodes=1074
+Search complete: depth=4, nodes=1074, time=0.058s
+Move computed in 0.058s
+→ Single-group move: 4 units from (1,4) to (1,3)
+Received: upd
+
+============================================================
+Turn 18
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,3)
+Opponent groups: 1
+Computing move...
+Depth 1: value=4.00, nodes=8
+Depth 2: value=0.00, nodes=45
+Depth 3: value=0.00, nodes=161
+Depth 4: value=0.00, nodes=923
+Search complete: depth=4, nodes=923, time=0.051s
+Move computed in 0.051s
+→ Single-group move: 4 units from (1,3) to (1,4)
+Received: upd
+
+============================================================
+Turn 19
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,4)
+Opponent groups: 1
+Computing move...
+Depth 1: value=5.33, nodes=8
+Depth 2: value=0.00, nodes=66
+Depth 3: value=0.00, nodes=314
+Depth 4: value=0.00, nodes=1074
+Search complete: depth=4, nodes=1074, time=0.058s
+Move computed in 0.058s
+→ Single-group move: 4 units from (1,4) to (1,3)
+Received: upd
+
+============================================================
+Turn 20
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,3)
+Opponent groups: 1
+Computing move...
+Depth 1: value=4.00, nodes=8
+Depth 2: value=0.00, nodes=45
+Depth 3: value=0.00, nodes=161
+Depth 4: value=0.00, nodes=923
+Search complete: depth=4, nodes=923, time=0.053s
+Move computed in 0.053s
+→ Single-group move: 4 units from (1,3) to (1,4)
+Received: upd
+
+============================================================
+Turn 21
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,4)
+Opponent groups: 1
+Computing move...
+Depth 1: value=5.33, nodes=8
+Depth 2: value=0.00, nodes=66
+Depth 3: value=0.00, nodes=314
+Depth 4: value=0.00, nodes=1074
+Search complete: depth=4, nodes=1074, time=0.059s
+Move computed in 0.059s
+→ Single-group move: 4 units from (1,4) to (1,3)
+Received: upd
+
+============================================================
+Turn 22
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,3)
+Opponent groups: 1
+Computing move...
+Depth 1: value=4.00, nodes=8
+Depth 2: value=0.00, nodes=45
+Depth 3: value=0.00, nodes=161
+Depth 4: value=0.00, nodes=923
+Search complete: depth=4, nodes=923, time=0.051s
+Move computed in 0.051s
+→ Single-group move: 4 units from (1,3) to (1,4)
+Received: upd
+
+============================================================
+Turn 23
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,4)
+Opponent groups: 1
+Computing move...
+Depth 1: value=5.33, nodes=8
+Depth 2: value=0.00, nodes=66
+Depth 3: value=0.00, nodes=314
+Depth 4: value=0.00, nodes=1074
+Search complete: depth=4, nodes=1074, time=0.060s
+Move computed in 0.060s
+→ Single-group move: 4 units from (1,4) to (1,3)
+Received: upd
+
+============================================================
+Turn 24
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,3)
+Opponent groups: 1
+Computing move...
+Depth 1: value=4.00, nodes=8
+Depth 2: value=0.00, nodes=45
+Depth 3: value=0.00, nodes=161
+Depth 4: value=0.00, nodes=923
+Search complete: depth=4, nodes=923, time=0.051s
+Move computed in 0.051s
+→ Single-group move: 4 units from (1,3) to (1,4)
+Received: upd
+
+============================================================
+Turn 25
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,4)
+Opponent groups: 1
+Computing move...
+Depth 1: value=5.33, nodes=8
+Depth 2: value=0.00, nodes=66
+Depth 3: value=0.00, nodes=314
+Depth 4: value=0.00, nodes=1074
+Search complete: depth=4, nodes=1074, time=0.060s
+Move computed in 0.060s
+→ Single-group move: 4 units from (1,4) to (1,3)
+Received: upd
+
+============================================================
+Turn 26
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,3)
+Opponent groups: 1
+Computing move...
+Depth 1: value=4.00, nodes=8
+Depth 2: value=0.00, nodes=45
+Depth 3: value=0.00, nodes=161
+Depth 4: value=0.00, nodes=923
+Search complete: depth=4, nodes=923, time=0.050s
+Move computed in 0.050s
+→ Single-group move: 4 units from (1,3) to (1,4)
+Received: upd
+
+============================================================
+Turn 27
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,4)
+Opponent groups: 1
+Computing move...
+Depth 1: value=5.33, nodes=8
+Depth 2: value=0.00, nodes=66
+Depth 3: value=0.00, nodes=314
+Depth 4: value=0.00, nodes=1074
+Search complete: depth=4, nodes=1074, time=0.059s
+Move computed in 0.059s
+→ Single-group move: 4 units from (1,4) to (1,3)
+Received: upd
+
+============================================================
+Turn 28
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,3)
+Opponent groups: 1
+Computing move...
+Depth 1: value=4.00, nodes=8
+Depth 2: value=0.00, nodes=45
+Depth 3: value=0.00, nodes=161
+Depth 4: value=0.00, nodes=923
+Search complete: depth=4, nodes=923, time=0.050s
+Move computed in 0.050s
+→ Single-group move: 4 units from (1,3) to (1,4)
+Received: upd
+
+============================================================
+Turn 29
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,4)
+Opponent groups: 1
+Computing move...
+Depth 1: value=5.33, nodes=8
+Depth 2: value=0.00, nodes=66
+Depth 3: value=0.00, nodes=314
+Depth 4: value=0.00, nodes=1074
+Search complete: depth=4, nodes=1074, time=0.057s
+Move computed in 0.057s
+→ Single-group move: 4 units from (1,4) to (1,3)
+Received: upd
+
+============================================================
+Turn 30
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,3)
+Opponent groups: 1
+Computing move...
+Depth 1: value=4.00, nodes=8
+Depth 2: value=0.00, nodes=45
+Depth 3: value=0.00, nodes=161
+Depth 4: value=0.00, nodes=923
+Search complete: depth=4, nodes=923, time=0.053s
+Move computed in 0.053s
+→ Single-group move: 4 units from (1,3) to (1,4)
+Received: upd
+
+============================================================
+Turn 31
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,4)
+Opponent groups: 1
+Computing move...
+Depth 1: value=5.33, nodes=8
+Depth 2: value=0.00, nodes=66
+Depth 3: value=0.00, nodes=314
+Depth 4: value=0.00, nodes=1074
+Search complete: depth=4, nodes=1074, time=0.061s
+Move computed in 0.061s
+→ Single-group move: 4 units from (1,4) to (1,3)
+Received: upd
+
+============================================================
+Turn 32
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,3)
+Opponent groups: 1
+Computing move...
+Depth 1: value=4.00, nodes=8
+Depth 2: value=0.00, nodes=45
+Depth 3: value=0.00, nodes=161
+Depth 4: value=0.00, nodes=923
+Search complete: depth=4, nodes=923, time=0.051s
+Move computed in 0.051s
+→ Single-group move: 4 units from (1,3) to (1,4)
+Received: upd
+
+============================================================
+Turn 33
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,4)
+Opponent groups: 1
+Computing move...
+Depth 1: value=5.33, nodes=8
+Depth 2: value=0.00, nodes=66
+Depth 3: value=0.00, nodes=314
+Depth 4: value=0.00, nodes=1074
+Search complete: depth=4, nodes=1074, time=0.059s
+Move computed in 0.059s
+→ Single-group move: 4 units from (1,4) to (1,3)
+Received: upd
+
+============================================================
+Turn 34
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,3)
+Opponent groups: 1
+Computing move...
+Depth 1: value=4.00, nodes=8
+Depth 2: value=0.00, nodes=45
+Depth 3: value=0.00, nodes=161
+Depth 4: value=0.00, nodes=923
+Search complete: depth=4, nodes=923, time=0.051s
+Move computed in 0.051s
+→ Single-group move: 4 units from (1,3) to (1,4)
+Received: upd
+
+============================================================
+Turn 35
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,4)
+Opponent groups: 1
+Computing move...
+Depth 1: value=5.33, nodes=8
+Depth 2: value=0.00, nodes=66
+Depth 3: value=0.00, nodes=314
+Depth 4: value=0.00, nodes=1074
+Search complete: depth=4, nodes=1074, time=0.060s
+Move computed in 0.060s
+→ Single-group move: 4 units from (1,4) to (1,3)
+Received: upd
+
+============================================================
+Turn 36
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,3)
+Opponent groups: 1
+Computing move...
+Depth 1: value=4.00, nodes=8
+Depth 2: value=0.00, nodes=45
+Depth 3: value=0.00, nodes=161
+Depth 4: value=0.00, nodes=923
+Search complete: depth=4, nodes=923, time=0.051s
+Move computed in 0.051s
+→ Single-group move: 4 units from (1,3) to (1,4)
+Received: upd
+
+============================================================
+Turn 37
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,4)
+Opponent groups: 1
+Computing move...
+Depth 1: value=5.33, nodes=8
+Depth 2: value=0.00, nodes=66
+Depth 3: value=0.00, nodes=314
+Depth 4: value=0.00, nodes=1074
+Search complete: depth=4, nodes=1074, time=0.059s
+Move computed in 0.059s
+→ Single-group move: 4 units from (1,4) to (1,3)
+Received: upd
+
+============================================================
+Turn 38
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,3)
+Opponent groups: 1
+Computing move...
+Depth 1: value=4.00, nodes=8
+Depth 2: value=0.00, nodes=45
+Depth 3: value=0.00, nodes=161
+Depth 4: value=0.00, nodes=923
+Search complete: depth=4, nodes=923, time=0.052s
+Move computed in 0.052s
+→ Single-group move: 4 units from (1,3) to (1,4)
+Received: upd
+
+============================================================
+Turn 39
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,4)
+Opponent groups: 1
+Computing move...
+Depth 1: value=5.33, nodes=8
+Depth 2: value=0.00, nodes=66
+Depth 3: value=0.00, nodes=314
+Depth 4: value=0.00, nodes=1074
+Search complete: depth=4, nodes=1074, time=0.060s
+Move computed in 0.060s
+→ Single-group move: 4 units from (1,4) to (1,3)
+Received: upd
+
+============================================================
+Turn 40
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,3)
+Opponent groups: 1
+Computing move...
+Depth 1: value=4.00, nodes=8
+Depth 2: value=0.00, nodes=45
+Depth 3: value=0.00, nodes=161
+Depth 4: value=0.00, nodes=923
+Search complete: depth=4, nodes=923, time=0.052s
+Move computed in 0.052s
+→ Single-group move: 4 units from (1,3) to (1,4)
+Received: upd
+
+============================================================
+Turn 41
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,4)
+Opponent groups: 1
+Computing move...
+Depth 1: value=5.33, nodes=8
+Depth 2: value=0.00, nodes=66
+Depth 3: value=0.00, nodes=314
+Depth 4: value=0.00, nodes=1074
+Search complete: depth=4, nodes=1074, time=0.059s
+Move computed in 0.059s
+→ Single-group move: 4 units from (1,4) to (1,3)
+Received: upd
+
+============================================================
+Turn 42
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,3)
+Opponent groups: 1
+Computing move...
+Depth 1: value=4.00, nodes=8
+Depth 2: value=0.00, nodes=45
+Depth 3: value=0.00, nodes=161
+Depth 4: value=0.00, nodes=923
+Search complete: depth=4, nodes=923, time=0.051s
+Move computed in 0.051s
+→ Single-group move: 4 units from (1,3) to (1,4)
+Received: upd
+
+============================================================
+Turn 43
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,4)
+Opponent groups: 1
+Computing move...
+Depth 1: value=5.33, nodes=8
+Depth 2: value=0.00, nodes=66
+Depth 3: value=0.00, nodes=314
+Depth 4: value=0.00, nodes=1074
+Search complete: depth=4, nodes=1074, time=0.059s
+Move computed in 0.059s
+→ Single-group move: 4 units from (1,4) to (1,3)
+Received: upd
+
+============================================================
+Turn 44
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,3)
+Opponent groups: 1
+Computing move...
+Depth 1: value=4.00, nodes=8
+Depth 2: value=0.00, nodes=45
+Depth 3: value=0.00, nodes=161
+Depth 4: value=0.00, nodes=923
+Search complete: depth=4, nodes=923, time=0.050s
+Move computed in 0.050s
+→ Single-group move: 4 units from (1,3) to (1,4)
+Received: upd
+
+============================================================
+Turn 45
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,4)
+Opponent groups: 1
+Computing move...
+Depth 1: value=5.33, nodes=8
+Depth 2: value=0.00, nodes=66
+Depth 3: value=0.00, nodes=314
+Depth 4: value=0.00, nodes=1074
+Search complete: depth=4, nodes=1074, time=0.059s
+Move computed in 0.059s
+→ Single-group move: 4 units from (1,4) to (1,3)
+Received: upd
+
+============================================================
+Turn 46
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,3)
+Opponent groups: 1
+Computing move...
+Depth 1: value=4.00, nodes=8
+Depth 2: value=0.00, nodes=45
+Depth 3: value=0.00, nodes=161
+Depth 4: value=0.00, nodes=923
+Search complete: depth=4, nodes=923, time=0.051s
+Move computed in 0.051s
+→ Single-group move: 4 units from (1,3) to (1,4)
+Received: upd
+
+============================================================
+Turn 47
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,4)
+Opponent groups: 1
+Computing move...
+Depth 1: value=5.33, nodes=8
+Depth 2: value=0.00, nodes=66
+Depth 3: value=0.00, nodes=314
+Depth 4: value=0.00, nodes=1074
+Search complete: depth=4, nodes=1074, time=0.059s
+Move computed in 0.059s
+→ Single-group move: 4 units from (1,4) to (1,3)
+Received: upd
+
+============================================================
+Turn 48
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,3)
+Opponent groups: 1
+Computing move...
+Depth 1: value=4.00, nodes=8
+Depth 2: value=0.00, nodes=45
+Depth 3: value=0.00, nodes=161
+Depth 4: value=0.00, nodes=923
+Search complete: depth=4, nodes=923, time=0.050s
+Move computed in 0.050s
+→ Single-group move: 4 units from (1,3) to (1,4)
+Received: upd
+
+============================================================
+Turn 49
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,4)
+Opponent groups: 1
+Computing move...
+Depth 1: value=5.33, nodes=8
+Depth 2: value=0.00, nodes=66
+Depth 3: value=0.00, nodes=314
+Depth 4: value=0.00, nodes=1074
+Search complete: depth=4, nodes=1074, time=0.060s
+Move computed in 0.060s
+→ Single-group move: 4 units from (1,4) to (1,3)
+Received: upd
+
+============================================================
+Turn 50
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,3)
+Opponent groups: 1
+Computing move...
+Depth 1: value=4.00, nodes=8
+Depth 2: value=0.00, nodes=45
+Depth 3: value=0.00, nodes=161
+Depth 4: value=0.00, nodes=923
+Search complete: depth=4, nodes=923, time=0.050s
+Move computed in 0.050s
+→ Single-group move: 4 units from (1,3) to (1,4)
+Received: upd
+
+============================================================
+Turn 51
+============================================================
+
+GameState(rows=5, cols=6, our_species=2, total_ours=4, total_opponent=4)
+Our groups: 1
+  • 4 units at (1,4)
+Opponent groups: 1
+Computing move...
+Depth 1: value=5.33, nodes=8
+Depth 2: value=0.00, nodes=66
+Depth 3: value=0.00, nodes=314
+Depth 4: value=0.00, nodes=1074
+Search complete: depth=4, nodes=1074, time=0.060s
+Move computed in 0.060s
+→ Single-group move: 4 units from (1,4) to (1,3)
+
+Game ended normally

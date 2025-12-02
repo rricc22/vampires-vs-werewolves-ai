@@ -49,6 +49,15 @@ class AIPlayer:
             Tuple of (number_of_moves, list_of_moves)
         """
         print(f"\n{self.game_state}")
+        
+        # Show current group status
+        our_groups = self.game_state.get_our_groups()
+        opp_groups = self.game_state.get_opponent_groups()
+        print(f"Our groups: {len(our_groups)}")
+        for x, y, count in our_groups:
+            print(f"  • {count} units at ({x},{y})")
+        print(f"Opponent groups: {len(opp_groups)}")
+        
         print("Computing move...")
         
         # Edge case: We have no units (eliminated)
@@ -79,7 +88,15 @@ class AIPlayer:
         
         # Convert to protocol format
         move_tuples = [move.to_tuple() for move in best_moves]
-        print(f"Sending moves: {move_tuples}")
+        
+        # Show what we're doing
+        if len(best_moves) == 1:
+            move = best_moves[0]
+            print(f"→ Single-group move: {move.count} units from ({move.x_from},{move.y_from}) to ({move.x_to},{move.y_to})")
+        else:
+            print(f"→ Multi-group move! {len(best_moves)} groups acting simultaneously:")
+            for i, move in enumerate(best_moves, 1):
+                print(f"  {i}. {move.count} units from ({move.x_from},{move.y_from}) to ({move.x_to},{move.y_to})")
         
         return len(move_tuples), move_tuples
     

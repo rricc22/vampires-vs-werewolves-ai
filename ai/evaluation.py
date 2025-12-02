@@ -1,5 +1,7 @@
 """Evaluation function for game states."""
 from game_state import GameState, Species
+from config import (IDEAL_MIN_GROUPS, IDEAL_MAX_GROUPS, 
+                    EXCESSIVE_GROUPS_THRESHOLD, SMALL_GROUP_THRESHOLD)
 import math
 
 
@@ -32,13 +34,46 @@ def evaluate_state(state: GameState) -> float:
     # 1. Material advantage (most important)
     score += (our_count - opponent_count) * 100
     
-    # 2. Position evaluation
+    # 2. Position evaluation - HEAVILY penalize fragmentation
     our_groups = state.get_our_groups()
     opponent_groups = state.get_opponent_groups()
     
-    # Bonus for number of groups (spread out is better)
-    score += len(our_groups) * 10
-    score -= len(opponent_groups) * 10
+    # Strategic group count evaluation
+    # CRITICAL FIX: EXTREME penalties to prevent fragmentation
+    num_our_groups = len(our_groups)
+    if num_our_groups == 1:
+        # Single group is actually good - concentrated power
+        score += 100
+    elif num_our_groups == 2:
+        # Two groups is acceptable
+        score += 0  # Neutral
+    elif num_our_groups == 3:
+        # Three groups is already bad
+        score -= 200
+    elif num_our_groups >= 4:
+        # 4+ groups is CATASTROPHICALLY penalized
+        score -= (num_our_groups - 3) * 500  # Extreme: -500 per excess group
+    
+    # HEAVILY penalize small groups - they are almost useless
+    for x, y, count in our_groups:
+        if count < SMALL_GROUP_THRESHOLD:
+            # Small groups waste resources
+            score -= 100  # Very strong penalty
+    
+    # Evaluate opponent's group count (mirror logic)
+    num_opp_groups = len(opponent_groups)
+    if num_opp_groups == 1:
+        score -= 100
+    elif num_opp_groups == 2:
+        score -= 0
+    elif num_opp_groups == 3:
+        score += 200
+    elif num_opp_groups >= 4:
+        score += (num_opp_groups - 3) * 500
+    
+    for x, y, count in opponent_groups:
+        if count < SMALL_GROUP_THRESHOLD:
+            score += 100
     
     # 3. Proximity to humans (with risk assessment)
     human_cells = []
@@ -101,10 +136,15 @@ def evaluate_state(state: GameState) -> float:
     
     score += (our_center_control - opponent_center_control) * 2
     
-    # 5. Threat assessment
+    # 5. Threat assessment and strategic concentration
+    # Reward concentration when facing concentrated enemy forces
+    # Penalize spreading out when close to enemy
+    min_dist_to_enemy = float('inf')
     for our_x, our_y, our_cnt in our_groups:
         for opp_x, opp_y, opp_cnt in opponent_groups:
             dist = manhattan_distance(our_x, our_y, opp_x, opp_y)
+            min_dist_to_enemy = min(min_dist_to_enemy, dist)
+            
             if dist <= 2:  # Close proximity
                 if our_cnt >= opp_cnt * 1.5:
                     # We can kill them
@@ -112,6 +152,32 @@ def evaluate_state(state: GameState) -> float:
                 elif opp_cnt >= our_cnt * 1.5:
                     # They can kill us
                     score -= 20
+    
+    # Strategic concentration evaluation:
+    # When close to enemy (min distance <= 3), reward concentration
+    if min_dist_to_enemy <= 3 and num_our_groups > 2:
+        # Enemy nearby - should concentrate forces, not split
+        score -= (num_our_groups - 2) * 20
+    
+    # Count winnable human targets within reach (distance <= 3)
+    winnable_targets = 0
+    if human_cells:
+        from move_generator import calculate_battle_probability
+        for hx, hy, h_count in human_cells:
+            for our_x, our_y, our_cnt in our_groups:
+                dist = manhattan_distance(our_x, our_y, hx, hy)
+                if dist <= 3:
+                    win_prob = calculate_battle_probability(our_cnt, h_count)
+                    if win_prob >= 0.7:
+                        winnable_targets += 1
+                        break  # Count each human group only once
+    
+    # Only reward splitting if there are multiple high-value targets
+    # and we're not under immediate threat
+    if winnable_targets >= 2 and min_dist_to_enemy > 3:
+        # Multiple targets available and safe to split
+        if num_our_groups >= 2:
+            score += 10  # Small bonus for being positioned to capture multiple targets
     
     return score
 

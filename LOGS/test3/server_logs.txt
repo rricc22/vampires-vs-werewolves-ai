@@ -1,0 +1,121 @@
+2025/12/02 18:48:27 Web server running on http://localhost:8080
+2025/12/02 18:48:27 Starting tcp server
+2025/12/02 18:48:32 First player entered the game
+2025/12/02 18:48:32 Initialisation finished for player 0
+2025/12/02 18:55:47 Second player entered the game
+2025/12/02 18:55:47 ===== Movement 0, 1 units
+2025/12/02 18:55:47 Human deleted, units and survivor in place
+2025/12/02 18:55:47 Initialisation finished for player 1
+2025/12/02 18:55:47 ===== Movement 1, 1 units
+2025/12/02 18:55:47 Human deleted, units and survivor in place
+EOF
+2025/12/02 18:55:48 ===== Movement 2, 1 units
+2025/12/02 18:55:48 Human deleted, units and survivor in place
+EOF
+2025/12/02 18:55:48 ===== Movement 3, 1 units
+2025/12/02 18:55:48 Human deleted, units and survivor in place
+EOF
+2025/12/02 18:55:48 ===== Movement 4, 1 units
+2025/12/02 18:55:48 Human deleted, units and survivor in place
+EOF
+2025/12/02 18:55:48 ===== Movement 5, 1 units
+2025/12/02 18:55:48 Human deleted, units and survivor in place
+EOF
+2025/12/02 18:55:49 ===== Movement 6, 1 units
+2025/12/02 18:55:49 Moving units into an empty cell
+EOF
+2025/12/02 18:55:51 ===== Movement 7, 2 units
+2025/12/02 18:55:51 Human deleted, units and survivor in place
+2025/12/02 18:55:51 Human deleted, units and survivor in place
+EOF
+2025/12/02 18:55:53 ===== Movement 8, 2 units
+2025/12/02 18:55:53 Human deleted, units and survivor in place
+2025/12/02 18:55:53 Human deleted, units and survivor in place
+EOF
+2025/12/02 18:55:54 ===== Movement 9, 1 units
+2025/12/02 18:55:54 Human deleted, units and survivor in place
+EOF
+2025/12/02 18:55:56 ===== Movement 10, 2 units
+2025/12/02 18:55:56 Human deleted, units and survivor in place
+2025/12/02 18:55:56 Human deleted, units and survivor in place
+EOF
+2025/12/02 18:55:58 ===== Movement 11, 2 units
+2025/12/02 18:55:58 Human deleted, units and survivor in place
+2025/12/02 18:55:58 Moving units into an empty cell
+EOF
+2025/12/02 18:56:00 ===== Movement 12, 2 units
+2025/12/02 18:56:00 Human deleted, units and survivor in place
+2025/12/02 18:56:00 Human deleted, units and survivor in place
+EOF
+2025/12/02 18:56:02 ===== Movement 13, 2 units
+2025/12/02 18:56:02 Human deleted, units and survivor in place
+2025/12/02 18:56:02 Human deleted, units and survivor in place
+EOF
+2025/12/02 18:56:03 ===== Movement 14, 1 units
+2025/12/02 18:56:03 Human deleted, units and survivor in place
+EOF
+2025/12/02 18:56:05 ===== Movement 15, 1 units
+2025/12/02 18:56:05 Human deleted, units and survivor in place
+EOF
+2025/12/02 18:56:07 ===== Movement 16, 1 units
+2025/12/02 18:56:07 Human deleted, units and survivor in place
+EOF
+2025/12/02 18:56:09 ===== Movement 17, 2 units
+2025/12/02 18:56:09 Human deleted, units and survivor in place
+2025/12/02 18:56:09 Moving units into an empty cell
+EOF
+2025/12/02 18:56:11 ===== Movement 18, 2 units
+2025/12/02 18:56:11 Human deleted, units and survivor in place
+2025/12/02 18:56:11 Moving units into an empty cell
+EOF
+2025/12/02 18:56:12 ===== Movement 19, 1 units
+2025/12/02 18:56:12 Human deleted, units and survivor in place
+EOF
+2025/12/02 18:56:14 ===== Movement 20, 2 units
+2025/12/02 18:56:14 Human deleted, units and survivor in place
+2025/12/02 18:56:14 Moving units into an empty cell
+EOF
+2025/12/02 18:56:16 ===== Movement 21, 2 units
+2025/12/02 18:56:16 Human deleted, units and survivor in place
+2025/12/02 18:56:16 Moving units into an empty cell
+EOF
+2025/12/02 18:56:18 ===== Movement 22, 1 units
+2025/12/02 18:56:18 Moving units into an empty cell
+EOF
+2025/12/02 18:56:20 ===== Movement 23, 1 units
+2025/12/02 18:56:20 Moving units into an empty cell
+EOF
+2025/12/02 18:56:21 ===== Movement 24, 1 units
+2025/12/02 18:56:21 Human deleted, units and survivor in place
+EOF
+2025/12/02 18:56:23 ===== Movement 25, 1 units
+2025/12/02 18:56:23 Human deleted, units and survivor in place
+EOF
+2025/12/02 18:56:25 ===== Movement 26, 1 units
+2025/12/02 18:56:25 Human deleted, units and survivor in place
+EOF
+2025/12/02 18:56:27 ===== Movement 27, 1 units
+2025/12/02 18:56:27 Human deleted, units and survivor in place
+EOF
+2025/12/02 18:56:29 ===== Movement 28, 1 units
+2025/12/02 18:56:29 Moving units into an empty cell
+EOF
+2025/12/02 18:56:30 ===== Movement 29, 1 units
+2025/12/02 18:56:30 Human deleted, units and survivor in place
+EOF
+2025/12/02 18:56:32 ===== Movement 30, 1 units
+2025/12/02 18:56:32 Moving units into an empty cell
+EOF
+2025/12/02 18:56:34 ===== Movement 31, 1 units
+2025/12/02 18:56:34 Moving units into an empty cell
+EOF
+2025/12/02 18:56:36 ===== Movement 32, 1 units
+2025/12/02 18:56:36 Merging two groups into a cell
+EOF
+2025/12/02 18:56:36 ===== Movement 33, 1 units
+2025/12/02 18:56:36 Human deleted, units and survivor in place
+EOF
+2025/12/02 18:56:37 ===== Movement 34, 1 units
+2025/12/02 18:56:37 Attacker won, ennemy deleted
+2025/12/02 18:56:37 Player 0 won
+signal: terminated

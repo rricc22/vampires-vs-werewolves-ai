@@ -1,0 +1,160 @@
+(base) riccardo@riccardo-desktop:~/Documents/Collaborative-Projects/vampires-vs-werewolves-ai/server/twilight-master$ go run . -map maps/map8.xml
+2025/12/02 18:41:19 Starting tcp server
+2025/12/02 18:41:19 Web server running on http://localhost:8080
+2025/12/02 18:41:27 First player entered the game
+2025/12/02 18:41:27 Initialisation finished for player 0
+2025/12/02 18:41:31 Second player entered the game
+2025/12/02 18:41:31 ===== Movement 0, 1 units
+2025/12/02 18:41:31 Human deleted, units and survivor in place
+2025/12/02 18:41:31 Initialisation finished for player 1
+2025/12/02 18:41:31 ===== Movement 1, 1 units
+2025/12/02 18:41:31 Human deleted, units and survivor in place
+2025/12/02 18:41:31 ===== Movement 2, 1 units
+2025/12/02 18:41:31 Human deleted, units and survivor in place
+2025/12/02 18:41:31 ===== Movement 3, 1 units
+2025/12/02 18:41:31 Human deleted, units and survivor in place
+2025/12/02 18:41:31 ===== Movement 4, 1 units
+2025/12/02 18:41:31 Human deleted, units and survivor in place
+2025/12/02 18:41:31 ===== Movement 5, 1 units
+2025/12/02 18:41:31 Human deleted, units and survivor in place
+2025/12/02 18:41:31 ===== Movement 6, 1 units
+2025/12/02 18:41:31 Human deleted, units and survivor in place
+2025/12/02 18:41:31 ===== Movement 7, 1 units
+2025/12/02 18:41:31 Human deleted, units and survivor in place
+2025/12/02 18:41:31 ===== Movement 8, 1 units
+2025/12/02 18:41:31 Human deleted, units and survivor in place
+2025/12/02 18:41:31 ===== Movement 9, 1 units
+2025/12/02 18:41:31 Human deleted, units and survivor in place
+2025/12/02 18:41:31 ===== Movement 10, 1 units
+2025/12/02 18:41:31 Human deleted, units and survivor in place
+2025/12/02 18:41:31 ===== Movement 11, 1 units
+2025/12/02 18:41:31 Human deleted, units and survivor in place
+2025/12/02 18:41:32 ===== Movement 12, 1 units
+2025/12/02 18:41:32 Human deleted, units and survivor in place
+2025/12/02 18:41:32 ===== Movement 13, 1 units
+2025/12/02 18:41:32 Human deleted, units and survivor in place
+2025/12/02 18:41:32 ===== Movement 14, 1 units
+2025/12/02 18:41:32 Human deleted, units and survivor in place
+2025/12/02 18:41:32 ===== Movement 15, 1 units
+2025/12/02 18:41:32 Human deleted, units and survivor in place
+2025/12/02 18:41:32 ===== Movement 16, 1 units
+2025/12/02 18:41:32 Human deleted, units and survivor in place
+2025/12/02 18:41:32 ===== Movement 17, 1 units
+2025/12/02 18:41:32 Human deleted, units and survivor in place
+2025/12/02 18:41:32 ===== Movement 18, 1 units
+2025/12/02 18:41:32 Human deleted, units and survivor in place
+2025/12/02 18:41:32 ===== Movement 19, 1 units
+2025/12/02 18:41:32 Human deleted, units and survivor in place
+2025/12/02 18:41:32 ===== Movement 20, 1 units
+2025/12/02 18:41:32 Human deleted, units and survivor in place
+2025/12/02 18:41:33 ===== Movement 21, 1 units
+2025/12/02 18:41:33 Moving units into an empty cell
+2025/12/02 18:41:33 ===== Movement 22, 1 units
+2025/12/02 18:41:33 Human deleted, units and survivor in place
+2025/12/02 18:41:33 ===== Movement 23, 1 units
+2025/12/02 18:41:33 Human deleted, units and survivor in place
+2025/12/02 18:41:33 ===== Movement 24, 1 units
+2025/12/02 18:41:33 Human deleted, units and survivor in place
+2025/12/02 18:41:33 ===== Movement 25, 1 units
+2025/12/02 18:41:33 Human deleted, units and survivor in place
+2025/12/02 18:41:33 ===== Movement 26, 1 units
+2025/12/02 18:41:33 Human deleted, units and survivor in place
+2025/12/02 18:41:33 ===== Movement 27, 1 units
+2025/12/02 18:41:33 Human deleted, units and survivor in place
+2025/12/02 18:41:33 ===== Movement 28, 1 units
+2025/12/02 18:41:33 Human deleted, units and survivor in place
+2025/12/02 18:41:33 ===== Movement 29, 1 units
+2025/12/02 18:41:33 Human deleted, units and survivor in place
+2025/12/02 18:41:33 ===== Movement 30, 1 units
+2025/12/02 18:41:33 Moving units into an empty cell
+2025/12/02 18:41:33 ===== Movement 31, 1 units
+2025/12/02 18:41:33 Human deleted, units and survivor in place
+2025/12/02 18:41:33 ===== Movement 32, 1 units
+2025/12/02 18:41:33 Moving units into an empty cell
+2025/12/02 18:41:33 ===== Movement 33, 1 units
+2025/12/02 18:41:33 Moving units into an empty cell
+2025/12/02 18:41:33 ===== Movement 34, 1 units
+2025/12/02 18:41:33 Human deleted, units and survivor in place
+2025/12/02 18:41:33 ===== Movement 35, 1 units
+2025/12/02 18:41:33 Moving units into an empty cell
+2025/12/02 18:41:33 ===== Movement 36, 1 units
+2025/12/02 18:41:33 Moving units into an empty cell
+2025/12/02 18:41:34 ===== Movement 37, 1 units
+2025/12/02 18:41:34 Moving units into an empty cell
+2025/12/02 18:41:34 ===== Movement 38, 1 units
+2025/12/02 18:41:34 Moving units into an empty cell
+2025/12/02 18:41:34 ===== Movement 39, 1 units
+2025/12/02 18:41:34 Moving units into an empty cell
+2025/12/02 18:41:34 ===== Movement 40, 1 units
+2025/12/02 18:41:34 Human deleted, units and survivor in place
+2025/12/02 18:41:34 ===== Movement 41, 1 units
+2025/12/02 18:41:34 Moving units into an empty cell
+2025/12/02 18:41:34 ===== Movement 42, 1 units
+2025/12/02 18:41:34 Human deleted, units and survivor in place
+2025/12/02 18:41:34 ===== Movement 43, 1 units
+2025/12/02 18:41:34 Moving units into an empty cell
+2025/12/02 18:41:34 ===== Movement 44, 1 units
+2025/12/02 18:41:34 Human deleted, units and survivor in place
+2025/12/02 18:41:35 ===== Movement 45, 1 units
+2025/12/02 18:41:35 Moving units into an empty cell
+2025/12/02 18:41:35 ===== Movement 46, 1 units
+2025/12/02 18:41:35 Human deleted, units and survivor in place
+2025/12/02 18:41:35 ===== Movement 47, 1 units
+2025/12/02 18:41:35 Moving units into an empty cell
+2025/12/02 18:41:35 ===== Movement 48, 1 units
+2025/12/02 18:41:35 Human deleted, units and survivor in place
+2025/12/02 18:41:35 ===== Movement 49, 1 units
+2025/12/02 18:41:35 Moving units into an empty cell
+2025/12/02 18:41:35 ===== Movement 50, 1 units
+2025/12/02 18:41:35 Moving units into an empty cell
+2025/12/02 18:41:35 ===== Movement 51, 1 units
+2025/12/02 18:41:35 Human deleted, units and survivor in place
+2025/12/02 18:41:35 ===== Movement 52, 1 units
+2025/12/02 18:41:35 Moving units into an empty cell
+2025/12/02 18:41:36 ===== Movement 53, 1 units
+2025/12/02 18:41:36 Moving units into an empty cell
+2025/12/02 18:41:36 ===== Movement 54, 1 units
+2025/12/02 18:41:36 Human deleted, units and survivor in place
+2025/12/02 18:41:36 ===== Movement 55, 1 units
+2025/12/02 18:41:36 Moving units into an empty cell
+2025/12/02 18:41:36 ===== Movement 56, 1 units
+2025/12/02 18:41:36 Human deleted, units and survivor in place
+2025/12/02 18:41:36 ===== Movement 57, 1 units
+2025/12/02 18:41:36 Moving units into an empty cell
+2025/12/02 18:41:36 ===== Movement 58, 1 units
+2025/12/02 18:41:36 Moving units into an empty cell
+2025/12/02 18:41:36 ===== Movement 59, 1 units
+2025/12/02 18:41:36 Moving units into an empty cell
+2025/12/02 18:41:36 ===== Movement 60, 1 units
+2025/12/02 18:41:36 Human deleted, units and survivor in place
+2025/12/02 18:41:36 ===== Movement 61, 1 units
+2025/12/02 18:41:36 Moving units into an empty cell
+2025/12/02 18:41:36 ===== Movement 62, 1 units
+2025/12/02 18:41:36 Moving units into an empty cell
+2025/12/02 18:41:36 ===== Movement 63, 1 units
+2025/12/02 18:41:36 Moving units into an empty cell
+2025/12/02 18:41:36 ===== Movement 64, 1 units
+2025/12/02 18:41:36 Moving units into an empty cell
+2025/12/02 18:41:37 ===== Movement 65, 1 units
+2025/12/02 18:41:37 Moving units into an empty cell
+2025/12/02 18:41:37 ===== Movement 66, 1 units
+2025/12/02 18:41:37 Moving units into an empty cell
+2025/12/02 18:41:37 ===== Movement 67, 1 units
+2025/12/02 18:41:37 Moving units into an empty cell
+2025/12/02 18:41:37 ===== Movement 68, 1 units
+2025/12/02 18:41:37 Moving units into an empty cell
+2025/12/02 18:41:37 ===== Movement 69, 1 units
+2025/12/02 18:41:37 Moving units into an empty cell
+2025/12/02 18:41:37 ===== Movement 70, 1 units
+2025/12/02 18:41:37 Moving units into an empty cell
+2025/12/02 18:41:37 ===== Movement 71, 1 units
+2025/12/02 18:41:37 Moving units into an empty cell
+2025/12/02 18:41:37 ===== Movement 72, 1 units
+2025/12/02 18:41:37 Moving units into an empty cell
+2025/12/02 18:41:37 ===== Movement 73, 1 units
+2025/12/02 18:41:37 Moving units into an empty cell
+2025/12/02 18:41:38 ===== Movement 74, 1 units
+2025/12/02 18:41:38 Moving units into an empty cell
+2025/12/02 18:41:38 ===== Movement 75, 1 units
+2025/12/02 18:41:38 Attacker lost, ennemy lost some unit
+2025/12/02 18:41:38 Player 0 won

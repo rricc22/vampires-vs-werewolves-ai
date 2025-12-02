@@ -2,6 +2,8 @@
 from typing import List, Tuple, Set
 import random
 from game_state import GameState, Move, Species
+from config import (MIN_GROUP_SIZE, MAX_GROUPS_PER_TURN, 
+                    MIN_SPLIT_SIZE, SPLIT_RATIOS)
 
 
 def calculate_battle_probability(attackers: int, defenders: int) -> float:
@@ -100,6 +102,14 @@ def generate_all_moves(state: GameState, for_opponent: bool = False) -> List[Lis
     """
     Generate all legal move combinations.
     
+    FIXED: Now supports multi-group moves per turn.
+    - Single-group moves: Each group moves independently
+    - Multi-group moves: Top strategic groups can move simultaneously (up to MAX_GROUPS_PER_TURN)
+    - Uses smart heuristics to avoid combinatorial explosion:
+      * Prioritizes larger groups
+      * Only combines groups that are far apart (distance > 3)
+      * Respects Rule 5: No cell can be both source and target
+    
     Rules:
     1. At least one movement per turn
     2. Can only move your species
@@ -126,15 +136,44 @@ def generate_all_moves(state: GameState, for_opponent: bool = False) -> List[Lis
     
     all_move_combos = []
     
-    # For each group, generate possible splits and moves
+    # Generate single-group moves for each group
+    group_moves = []  # List of (group_info, moves_list)
     for x, y, count in groups:
-        # Generate moves from this single group
-        single_group_moves = generate_moves_from_cell(state, x, y, count)
-        if single_group_moves:
-            all_move_combos.extend([[move] for move in single_group_moves])
+        moves = generate_moves_from_cell(state, x, y, count)
+        if moves:
+            group_moves.append(((x, y, count), moves))
+            # Add each single move as a combo
+            all_move_combos.extend([[move] for move in moves])
     
-    # TODO: Add multi-group move combinations (for now, single moves per turn)
-    # This is a simplification to keep the branching factor manageable
+    # Generate multi-group moves (strategic combinations)
+    # To avoid combinatorial explosion, we use smart heuristics:
+    # 1. Only combine top groups by size
+    # 2. Validate Rule 5 for each combination (no source/target overlap)
+    if len(group_moves) >= 2:
+        # Sort groups by size (descending) to prioritize important groups
+        sorted_group_moves = sorted(group_moves, key=lambda gm: gm[0][2], reverse=True)
+        
+        # Take top groups (up to MAX_GROUPS_PER_TURN)
+        top_groups = sorted_group_moves[:min(MAX_GROUPS_PER_TURN, len(sorted_group_moves))]
+        
+        # Try combining moves from top groups
+        if len(top_groups) == 2:
+            (x1, y1, c1), moves1 = top_groups[0]
+            (x2, y2, c2), moves2 = top_groups[1]
+            
+            # Generate combinations of moves from both groups
+            # FIXED: Instead of checking distance, we check actual Rule 5 violations
+            # This allows more realistic multi-group moves
+            multi_count = 0
+            for move1 in moves1[:10]:  # Limit to top 10 moves per group to control branching
+                for move2 in moves2[:10]:
+                    # Check Rule 5: source and target can't overlap
+                    sources = {(move1.x_from, move1.y_from), (move2.x_from, move2.y_from)}
+                    targets = {(move1.x_to, move1.y_to), (move2.x_to, move2.y_to)}
+                    if not sources & targets:  # No overlap
+                        all_move_combos.append([move1, move2])
+                        multi_count += 1
+
     
     return all_move_combos if all_move_combos else [[]]
 
@@ -142,6 +181,10 @@ def generate_all_moves(state: GameState, for_opponent: bool = False) -> List[Lis
 def generate_moves_from_cell(state: GameState, x: int, y: int, count: int, debug: bool = False) -> List[Move]:
     """
     Generate all possible moves from a single cell.
+    
+    FIXED: Reduced split ratios to prevent excessive fragmentation.
+    Now uses configurable SPLIT_RATIOS (default: all, 2/3, 1/2) instead of (all, 3/4, 1/2, 1/4, 1).
+    Also enforces MIN_GROUP_SIZE and MIN_SPLIT_SIZE to avoid creating tiny ineffective groups.
     
     Args:
         state: Current game state
@@ -173,13 +216,24 @@ def generate_moves_from_cell(state: GameState, x: int, y: int, count: int, debug
             print(f"  Direction ({dx},{dy}) → target ({target_x},{target_y}): H={target_cell.humans} V={target_cell.vampires} W={target_cell.werewolves}")
         
         # Generate moves with different creature counts
-        # Try moving different amounts: all, 3/4, 1/2, 1/4, or at least 1
-        move_amounts = set([count])  # Always include moving all
-        if count > 1:
-            move_amounts.add(max(1, count * 3 // 4))
-            move_amounts.add(max(1, count // 2))
-            move_amounts.add(max(1, count // 4))
-            move_amounts.add(1)
+        # FIXED: Use configured split ratios to reduce fragmentation
+        move_amounts = set()
+        
+        # Always include moving all units
+        move_amounts.add(count)
+        
+        # Only allow splits if we have enough units
+        if count >= MIN_SPLIT_SIZE:
+            for ratio in SPLIT_RATIOS:
+                if ratio < 1.0:  # Don't duplicate the "all" case
+                    amount = max(MIN_GROUP_SIZE, int(count * ratio))
+                    # Only add if it creates meaningful groups
+                    remaining = count - amount
+                    if remaining >= MIN_GROUP_SIZE or remaining == 0:
+                        move_amounts.add(amount)
+        
+        # If we're too small to split, just move all or nothing
+        # (the "all" case is already added)
         
         for amount in move_amounts:
             if amount > 0 and amount <= count:
