@@ -1,41 +1,31 @@
-# Vampires VS Werewolves - AI Player
+# Vampires vs Werewolves AI
 
-An intelligent AI player for the Vampires VS Werewolves game using Alpha-Beta pruning with iterative deepening.
+An intelligent AI player for the Vampires vs Werewolves strategy game, using Alpha-Beta pruning with iterative deepening.
 
-## 🎮 Quick Start
+## Quick Start
 
-### Run a Complete Game (Easiest!)
+### Run a Complete Game
 
 ```bash
-# Run server + 2 AI players automatically
 bash play_game.sh
 ```
 
-This will:
-- Start the game server
-- Launch 2 AI players (Vampires vs Werewolves)
-- Show live game stats
-- Watch at http://localhost:8080
+This starts the server and launches 2 AI players. Watch the game at http://localhost:8080
 
-### Manual Setup (Advanced)
+### Manual Setup
 
-### 1. Start Server
 ```bash
+# Terminal 1: Start server
 cd server/twilight-master
 go run . -map maps/map8.xml
 
-```bash
-# 1. Start the game server
-cd server/twilight-master
-./twilight -map maps/testmap.xml
-
-# 2. In another terminal, run AI player 1
+# Terminal 2: Run AI player 1 (Vampires)
 python3 ai/ai_player.py localhost 5555
 
-# 3. In another terminal, run AI player 2
+# Terminal 3: Run AI player 2 (Werewolves)
 python3 ai/ai_player.py localhost 5555
 
-# 4. Watch the game at http://localhost:8080
+# Open browser: http://localhost:8080
 ```
 
 ### Run Tests
@@ -44,126 +34,112 @@ python3 ai/ai_player.py localhost 5555
 python3 tests/test_ai.py
 ```
 
-## 📁 Project Structure
+## How It Works
+
+### AI Strategy
+- **Alpha-Beta Search**: Looks 3-5 moves ahead in 1.8 seconds
+- **Smart Evaluation**: Scores positions based on material, position, threats
+- **Battle Simulation**: Calculates win probabilities before attacking
+- **Anti-Fragmentation**: Maintains 1-2 strong groups instead of many weak ones
+- **Multi-Group Moves**: Can coordinate 2 groups simultaneously
+
+### Key Features
+- 70% minimum win probability filter (no risky attacks)
+- Iterative deepening for time management
+- Multi-group coordination for tactical flexibility
+- Concentrated force management (anti-fragmentation)
+
+## Project Structure
 
 ```
-Vamp_wolf_game/
-├── ai/                          # AI implementation
-│   ├── ai_player.py            # Main entry point
-│   ├── alphabeta.py            # Alpha-Beta search
-│   ├── evaluation.py           # Position evaluation
-│   ├── move_generator.py       # Move generation & battles
-│   ├── game_state.py           # Game state representation
-│   ├── client.py               # Network client
-│   └── config.py               # Configuration
-├── tests/                       # Test suite
-│   └── test_ai.py              # All tests
-├── docs/                        # Documentation
-│   ├── AI_DOCUMENTATION.md     # Technical details
-│   └── Projectv10.pdf          # Project specification
-├── maps/                        # Game maps
-│   ├── testmap.xml
-│   └── thetrap.xml
-├── server/                      # Game server (Go)
-│   └── twilight-master/
-├── AGENTS.md                    # Agent guidelines
-├── QUICKSTART.md                # Quick start guide
-└── README.md                    # This file
+ai/
+├── ai_player.py        # Main entry point
+├── alphabeta.py        # Alpha-Beta search algorithm
+├── evaluation.py       # Position evaluation function
+├── move_generator.py   # Move generation & battle logic
+├── game_state.py       # Board state representation
+├── client.py           # TCP client for server protocol
+└── config.py           # Configuration (thresholds, limits)
+
+tests/
+└── test_ai.py          # Unit tests
+
+server/twilight-master/ # Go game server
+maps/                   # Game maps (.xml)
 ```
 
-## 🤖 AI Features
+## Game Rules
 
-- **Alpha-Beta Pruning**: Minimax search with alpha-beta pruning
-- **Iterative Deepening**: Achieves depth 3-5 in 1.8 seconds
-- **Smart Evaluation**: Considers material, position, threats, and strategy
-- **Battle Simulation**: Accurate probability calculations per game rules
-- **Time Management**: Always stays under 2-second limit
+- **Objective**: Convert all humans or eliminate the opponent
+- **Movement**: Move units 1 cell (horizontal/vertical)
+- **Converting Humans**: Need ≥ equal numbers to guarantee conversion
+- **Killing Opponents**: Need ≥ 1.5x their numbers to guarantee kill
+- **Battles**: Random outcome when numbers don't meet thresholds
+- **Time Limit**: 2 seconds per move
 
-## 📊 Performance
+## Configuration
 
-- **Search depth**: 3-5 plies
-- **Nodes explored**: 500-5000 per move
-- **Time per move**: ~1.5-1.8 seconds
-- **Code**: ~1,050 lines of clean Python
+Adjust AI behavior in `ai/config.py`:
 
-## 🧪 Testing
-
-All tests pass successfully:
-
-```bash
-$ python3 tests/test_ai.py
-============================================================
-Running AI Tests
-============================================================
-✓ GameState test passed
-✓ Battle probability test passed
-✓ Move generation test passed
-✓ Evaluation test passed
-✓ Move application test passed
-✓ Alpha-Beta test passed
-============================================================
-All tests passed! ✓
-============================================================
+```python
+SPLIT_RATIOS = [1.0, 0.5]     # Allow moving all or half of a group
+MIN_GROUP_SIZE = 5            # Minimum viable group size
+IDEAL_MAX_GROUPS = 2          # Target 1-2 groups
+SMALL_GROUP_THRESHOLD = 10    # Groups below this are penalized
 ```
 
-## 📚 Documentation
+Adjust search depth/time in `ai/ai_player.py`:
 
-- **[QUICKSTART.md](QUICKSTART.md)** - How to run and use the AI
-- **[AGENTS.md](AGENTS.md)** - Guidelines for developers
-- **[docs/AI_DOCUMENTATION.md](docs/AI_DOCUMENTATION.md)** - Technical details
+```python
+best_move = alpha_beta_search(
+    state=self.game_state,
+    max_depth=4,        # Search depth
+    time_limit=1.8      # Seconds
+)
+```
 
-## 🎯 Game Rules
+## Requirements
 
-- **Objective**: Be the dominant species (Vampires or Werewolves)
-- **Convert humans**: Need ≥ equal numbers
-- **Kill opponents**: Need ≥ 1.5x their numbers
-- **Random battles**: When numbers don't meet thresholds
-- **Time limit**: 2 seconds per move
-
-## 🔧 Requirements
-
-- Python 3.7+
+- Python 3.7+ (no external dependencies, stdlib only)
 - Go 1.16+ (for server)
-- No external Python dependencies (stdlib only)
 
-### Building the Server
+## Performance
 
-If the compiled binary isn't present, build it:
+- **Search Depth**: 3-5 plies
+- **Nodes Explored**: 500-5,000 per move
+- **Time Per Move**: 0.05-1.8 seconds
+- **Code Size**: ~1,050 lines Python
 
-```bash
-cd server/twilight-master
-go build -o twilight .
-```
+## Development
 
-The binary is excluded from git to keep the repository clean.
+See [DEVELOPMENT.md](DEVELOPMENT.md) for:
+- Build and test commands
+- Architecture details
+- Code style guidelines
+- How to contribute
 
-## ✅ Recent Improvements
+## Recent Improvements
 
-### Suicidal Attack Fix (2025-11-04)
-- **Fixed**: AI no longer makes risky 50% probability attacks
-- **Changed**: Filter threshold raised from 30% → 70% minimum win probability
-- **Tested**: Verified on both symmetric (map8) and asymmetric (thetrap) maps
-- **Result**: 102-move test game with zero risky attacks
-- **Docs**: See `docs/TESTING_SUMMARY.md` for full verification
+### Anti-Fragmentation System (2025-12-02)
+- **Problem**: AI was creating 5-7 weak groups
+- **Solution**: 
+  - Reduced split ratios to `[1.0, 0.5]` (all or half)
+  - Extreme penalties for 3+ groups (-200 to -2200)
+  - Multi-group coordination for tactical flexibility
+- **Result**: AI maintains 1-2 strong groups throughout the game
 
-## 🚀 Future Improvements
+### 70% Attack Filter (2025-11-04)
+- **Problem**: AI made 50% probability attacks (too risky)
+- **Solution**: Raised filter from 30% → 70% minimum win probability
+- **Result**: Zero risky attacks in 102-move test game
 
-1. Opening book for common maps
-2. Transposition tables for caching
-3. Better move ordering for pruning
-4. Multi-group coordinated moves
-5. Opponent modeling
-6. Dynamic risk threshold based on game state
-7. Endgame tables for few-unit scenarios
-
-## 📝 License
+## License
 
 Educational project for CentraleSupélec AI course.
 
-## 👤 Author
+## Status
 
-Riccardo's AI Team
-
----
-
-**Status**: Production ready ✅ (All tests passing, strategic improvements verified)
+✅ **Production Ready**
+- All tests passing
+- Strategic improvements verified
+- Anti-fragmentation working perfectly

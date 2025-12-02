@@ -1,0 +1,1 @@
+# Test Logs\n\nRun tests with `test_improvements.sh` and logs will appear here.\n\nDirectory structure:\n- test1/ - First test run\n- test2/ - Second test run\n- test3/ - Third test run\n\nEach test directory contains:\n- ai_player_logs.txt - AI output\n- server_logs.txt - Server output
