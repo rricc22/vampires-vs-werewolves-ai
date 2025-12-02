@@ -19,6 +19,11 @@ This will:
 
 ### Manual Setup (Advanced)
 
+### 1. Start Server
+```bash
+cd server/twilight-master
+go run . -map maps/map8.xml
+
 ```bash
 # 1. Start the game server
 cd server/twilight-master
