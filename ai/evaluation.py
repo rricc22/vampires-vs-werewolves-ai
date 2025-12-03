@@ -1,7 +1,6 @@
 """Evaluation function for game states."""
 from game_state import GameState, Species
-from config import (IDEAL_MIN_GROUPS, IDEAL_MAX_GROUPS, 
-                    EXCESSIVE_GROUPS_THRESHOLD, SMALL_GROUP_THRESHOLD)
+import config
 import math
 
 
@@ -32,7 +31,7 @@ def evaluate_state(state: GameState) -> float:
     score = 0.0
     
     # 1. Material advantage (most important)
-    score += (our_count - opponent_count) * 100
+    score += (our_count - opponent_count) * config.WEIGHT_MATERIAL
     
     # 2. Position evaluation - HEAVILY penalize fragmentation
     our_groups = state.get_our_groups()
@@ -43,37 +42,37 @@ def evaluate_state(state: GameState) -> float:
     num_our_groups = len(our_groups)
     if num_our_groups == 1:
         # Single group is actually good - concentrated power
-        score += 100
+        score += config.BONUS_ONE_GROUP
     elif num_our_groups == 2:
         # Two groups is acceptable
-        score += 0  # Neutral
+        score += config.PENALTY_TWO_GROUPS  # Usually 0 (neutral)
     elif num_our_groups == 3:
         # Three groups is already bad
-        score -= 200
+        score -= config.PENALTY_THREE_GROUPS
     elif num_our_groups >= 4:
         # 4+ groups is CATASTROPHICALLY penalized
-        score -= (num_our_groups - 3) * 500  # Extreme: -500 per excess group
+        score -= (num_our_groups - 3) * config.PENALTY_EXCESS_GROUPS
     
     # HEAVILY penalize small groups - they are almost useless
     for x, y, count in our_groups:
-        if count < SMALL_GROUP_THRESHOLD:
+        if count < config.SMALL_GROUP_THRESHOLD:
             # Small groups waste resources
-            score -= 100  # Very strong penalty
+            score -= config.PENALTY_SMALL_GROUP
     
     # Evaluate opponent's group count (mirror logic)
     num_opp_groups = len(opponent_groups)
     if num_opp_groups == 1:
-        score -= 100
+        score -= config.BONUS_ONE_GROUP
     elif num_opp_groups == 2:
-        score -= 0
+        score -= config.PENALTY_TWO_GROUPS
     elif num_opp_groups == 3:
-        score += 200
+        score += config.PENALTY_THREE_GROUPS
     elif num_opp_groups >= 4:
-        score += (num_opp_groups - 3) * 500
+        score += (num_opp_groups - 3) * config.PENALTY_EXCESS_GROUPS
     
     for x, y, count in opponent_groups:
-        if count < SMALL_GROUP_THRESHOLD:
-            score += 100
+        if count < config.SMALL_GROUP_THRESHOLD:
+            score += config.PENALTY_SMALL_GROUP
     
     # 3. Proximity to humans (with risk assessment)
     human_cells = []
@@ -95,16 +94,16 @@ def evaluate_state(state: GameState) -> float:
                 if dist <= 2:  # Close proximity
                     if win_prob >= 0.7:
                         # High confidence win - reward being close
-                        score += 40 / (1 + dist)
+                        score += config.WEIGHT_HUMAN_PROXIMITY / (1 + dist)
                     elif win_prob >= 0.5:
                         # Moderate chance - small reward
-                        score += 15 / (1 + dist)
+                        score += (config.WEIGHT_HUMAN_PROXIMITY * 0.375) / (1 + dist)
                     elif win_prob < 0.5:
                         # Risky or losing - penalize being too close
-                        score -= 50 / (1 + dist)
+                        score -= (config.WEIGHT_HUMAN_PROXIMITY * 1.25) / (1 + dist)
                 elif dist <= 4 and win_prob >= 0.7:
                     # Moderate distance to highly winnable target - small bonus
-                    score += 10
+                    score += config.WEIGHT_HUMAN_PROXIMITY * 0.25
         
         # Same for opponent proximity to humans
         for x, y, count in opponent_groups:
@@ -114,12 +113,12 @@ def evaluate_state(state: GameState) -> float:
                 
                 if dist <= 2 and win_prob >= 0.7:
                     # They have high confidence - penalize heavily
-                    score -= 40 / (1 + dist)
+                    score -= config.WEIGHT_HUMAN_PROXIMITY / (1 + dist)
                 elif dist <= 2 and win_prob >= 0.5:
                     # Moderate threat - penalize
-                    score -= 15 / (1 + dist)
+                    score -= (config.WEIGHT_HUMAN_PROXIMITY * 0.375) / (1 + dist)
                 elif dist <= 4 and win_prob >= 0.7:
-                    score -= 10
+                    score -= config.WEIGHT_HUMAN_PROXIMITY * 0.25
     
     # 4. Control of center (strategic advantage)
     center_x, center_y = state.rows // 2, state.cols // 2
@@ -134,7 +133,7 @@ def evaluate_state(state: GameState) -> float:
         dist_to_center = manhattan_distance(x, y, center_x, center_y)
         opponent_center_control += count / (1 + dist_to_center)
     
-    score += (our_center_control - opponent_center_control) * 2
+    score += (our_center_control - opponent_center_control) * config.WEIGHT_CENTER_CONTROL
     
     # 5. Threat assessment and strategic concentration
     # Reward concentration when facing concentrated enemy forces
@@ -148,16 +147,16 @@ def evaluate_state(state: GameState) -> float:
             if dist <= 2:  # Close proximity
                 if our_cnt >= opp_cnt * 1.5:
                     # We can kill them
-                    score += 20
+                    score += config.WEIGHT_THREAT_ASSESSMENT
                 elif opp_cnt >= our_cnt * 1.5:
                     # They can kill us
-                    score -= 20
+                    score -= config.WEIGHT_THREAT_ASSESSMENT
     
     # Strategic concentration evaluation:
     # When close to enemy (min distance <= 3), reward concentration
     if min_dist_to_enemy <= 3 and num_our_groups > 2:
         # Enemy nearby - should concentrate forces, not split
-        score -= (num_our_groups - 2) * 20
+        score -= (num_our_groups - 2) * config.PENALTY_SPLIT_NEAR_ENEMY
     
     # Count winnable human targets within reach (distance <= 3)
     winnable_targets = 0

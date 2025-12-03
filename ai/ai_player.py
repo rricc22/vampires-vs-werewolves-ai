@@ -75,8 +75,13 @@ class AIPlayer:
         
         start_time = time.time()
         
-        # Use Alpha-Beta to find best move
-        best_moves = find_best_move(self.game_state, max_depth=4, time_limit=1.8)
+        # Use Alpha-Beta to find best move (using config settings)
+        import config
+        best_moves = find_best_move(
+            self.game_state, 
+            max_depth=config.SEARCH_MAX_DEPTH, 
+            time_limit=config.SEARCH_TIME_LIMIT
+        )
         
         elapsed = time.time() - start_time
         print(f"Move computed in {elapsed:.3f}s")
