@@ -1,0 +1,97 @@
+{
+  "test_run": {
+    "timestamp": "2025-12-04T16:06:07.116802",
+    "total_duration_seconds": 250.5,
+    "configuration": {
+      "maps": [
+        "testmap.xml",
+        "testmap2.xml",
+        "map8.xml",
+        "thetrap.xml",
+        "corridor.xml",
+        "arena.xml"
+      ],
+      "p1_preset": "balanced",
+      "p2_preset": "balanced",
+      "rounds": 1,
+      "timeout": 120,
+      "parallel": 3,
+      "log_dir": "/home/riccardo/Documents/vampires-vs-werewolves-ai/LOGS/test_run_20251204_160156"
+    }
+  },
+  "summary": {
+    "total_games": 6,
+    "player1_wins": 0,
+    "player2_wins": 0,
+    "draws": 6,
+    "errors": 0
+  },
+  "games": [
+    {
+      "map_name": "testmap.xml",
+      "winner": "draw",
+      "total_turns": 102,
+      "duration_seconds": 13.6,
+      "human_conversions": 2,
+      "pvp_battles": 0,
+      "tcp_port": 5555,
+      "web_port": 8080,
+      "error": null
+    },
+    {
+      "map_name": "thetrap.xml",
+      "winner": "draw",
+      "total_turns": 102,
+      "duration_seconds": 36.1,
+      "human_conversions": 4,
+      "pvp_battles": 0,
+      "tcp_port": 5558,
+      "web_port": 8083,
+      "error": null
+    },
+    {
+      "map_name": "testmap2.xml",
+      "winner": "draw",
+      "total_turns": 67,
+      "duration_seconds": 123.2,
+      "human_conversions": 2,
+      "pvp_battles": 0,
+      "tcp_port": 5556,
+      "web_port": 8081,
+      "error": null
+    },
+    {
+      "map_name": "map8.xml",
+      "winner": "draw",
+      "total_turns": 72,
+      "duration_seconds": 123.2,
+      "human_conversions": 39,
+      "pvp_battles": 5,
+      "tcp_port": 5557,
+      "web_port": 8082,
+      "error": null
+    },
+    {
+      "map_name": "corridor.xml",
+      "winner": "draw",
+      "total_turns": 87,
+      "duration_seconds": 123.2,
+      "human_conversions": 3,
+      "pvp_battles": 0,
+      "tcp_port": 5559,
+      "web_port": 8084,
+      "error": null
+    },
+    {
+      "map_name": "arena.xml",
+      "winner": "draw",
+      "total_turns": 89,
+      "duration_seconds": 123.2,
+      "human_conversions": 1,
+      "pvp_battles": 0,
+      "tcp_port": 5560,
+      "web_port": 8085,
+      "error": null
+    }
+  ]
+}

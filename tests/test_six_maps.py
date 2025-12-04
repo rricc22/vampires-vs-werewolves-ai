@@ -14,9 +14,11 @@ Usage:
 """
 
 import argparse
+import atexit
 import json
 import os
 import re
+import signal
 import subprocess
 import sys
 import time
@@ -54,6 +56,47 @@ BASE_WEB_PORT = 8080
 
 # Thread-safe print lock
 print_lock = threading.Lock()
+
+# Global process registry for cleanup
+_global_processes = []
+_global_lock = threading.Lock()
+
+
+def register_process(proc):
+    """Register a process for global cleanup."""
+    with _global_lock:
+        _global_processes.append(proc)
+
+
+def cleanup_all_registered_processes():
+    """Emergency cleanup of all registered processes."""
+    with _global_lock:
+        for proc in _global_processes:
+            if proc and proc.poll() is None:
+                try:
+                    proc.terminate()
+                    proc.wait(timeout=2)
+                except Exception:
+                    try:
+                        proc.kill()
+                    except Exception:
+                        pass
+        _global_processes.clear()
+
+
+# Register cleanup handlers
+atexit.register(cleanup_all_registered_processes)
+
+
+def signal_handler(sig, frame):
+    """Handle Ctrl+C and other signals."""
+    print("\n\nReceived interrupt signal. Cleaning up processes...")
+    cleanup_all_registered_processes()
+    sys.exit(0)
+
+
+signal.signal(signal.SIGINT, signal_handler)
+signal.signal(signal.SIGTERM, signal_handler)
 
 
 # =============================================================================
@@ -215,6 +258,7 @@ class GameRunner:
                 stdout=open(self.server_log, "w"),
                 stderr=subprocess.STDOUT,
             )
+            register_process(self.server_proc)  # Register for global cleanup
             time.sleep(2)  # Wait for server to start
 
             # Check server is running
@@ -240,6 +284,7 @@ class GameRunner:
                 stdout=open(log_file, "w"),
                 stderr=subprocess.STDOUT,
             )
+            register_process(proc)  # Register for global cleanup
             return proc
         except Exception as e:
             self.log(f"  [{self.map_name}] Error starting player {player_id}: {e}")
@@ -340,16 +385,38 @@ class GameRunner:
             self.cleanup()
 
     def cleanup(self):
-        """Terminate all processes."""
+        """Terminate all processes aggressively."""
         for proc in [self.server_proc, self.p1_proc, self.p2_proc]:
             if proc and proc.poll() is None:
                 try:
                     proc.terminate()
-                    proc.wait(timeout=5)
+                    proc.wait(timeout=3)
                 except subprocess.TimeoutExpired:
-                    proc.kill()
+                    try:
+                        proc.kill()
+                        proc.wait(timeout=2)
+                    except Exception:
+                        pass
                 except Exception:
                     pass
+        
+        # Extra safety: force kill any lingering processes on our ports
+        try:
+            subprocess.run(
+                ["fuser", "-k", f"{self.tcp_port}/tcp"],
+                capture_output=True,
+                timeout=2
+            )
+            subprocess.run(
+                ["fuser", "-k", f"{self.web_port}/tcp"],
+                capture_output=True,
+                timeout=2
+            )
+        except Exception:
+            pass
+        
+        # Give OS time to release ports
+        time.sleep(0.5)
 
 
 # =============================================================================
@@ -501,9 +568,17 @@ class SixMapTestRunner:
     def _cleanup_all_processes(self):
         """Kill any existing server/player processes."""
         try:
-            subprocess.run(["pkill", "-f", "twilight"], capture_output=True, timeout=5)
-            subprocess.run(["pkill", "-f", "ai_player.py"], capture_output=True, timeout=5)
-            time.sleep(1)
+            # Kill by process name
+            subprocess.run(["pkill", "-9", "-f", "twilight"], capture_output=True, timeout=5)
+            subprocess.run(["pkill", "-9", "-f", "ai_player.py"], capture_output=True, timeout=5)
+            
+            # Kill by port (extra safety)
+            for port in range(BASE_TCP_PORT, BASE_TCP_PORT + 10):
+                subprocess.run(["fuser", "-k", f"{port}/tcp"], capture_output=True, timeout=2)
+            for port in range(BASE_WEB_PORT, BASE_WEB_PORT + 10):
+                subprocess.run(["fuser", "-k", f"{port}/tcp"], capture_output=True, timeout=2)
+            
+            time.sleep(2)  # Give OS time to clean up
         except Exception:
             pass
 

@@ -14,6 +14,8 @@ class AIPlayer:
     def __init__(self, name: str = "AlphaBetaAI"):
         self.name = name
         self.game_state = GameState()
+        self.position_history = []  # Track recent positions to detect loops
+        self.move_history = []  # Track recent moves
     
     def update_from_message(self, message: List):
         """Update game state from server message."""
@@ -73,15 +75,42 @@ class AIPlayer:
             move_tuples = [move.to_tuple() for move in best_moves]
             return len(move_tuples), move_tuples
         
+        # Check for position repetition (detect loops)
+        current_position = self._get_position_hash()
+        repetition_count = self.position_history.count(current_position)
+        
+        if repetition_count >= 2:
+            print(f"⚠️  Position repetition detected ({repetition_count+1} times)")
+            print("   Breaking loop with randomized move selection...")
+        
         start_time = time.time()
         
         # Use Alpha-Beta to find best move (using config settings)
         import config
+        from move_generator import generate_all_moves
+        import random
+        
         best_moves = find_best_move(
             self.game_state, 
             max_depth=config.SEARCH_MAX_DEPTH, 
             time_limit=config.SEARCH_TIME_LIMIT
         )
+        
+        # If we're in a repetition loop, pick a different move
+        if repetition_count >= 2 and best_moves:
+            # Generate all possible moves
+            all_moves = generate_all_moves(self.game_state, for_opponent=False)
+            if len(all_moves) > 1:
+                # Filter out the best move (which causes loop)
+                alternative_moves = [m for m in all_moves if m != best_moves]
+                if alternative_moves:
+                    best_moves = random.choice(alternative_moves)
+                    print("   → Selected alternative move to break loop")
+        
+        # Track position history (keep last 10)
+        self.position_history.append(current_position)
+        if len(self.position_history) > 10:
+            self.position_history.pop(0)
         
         elapsed = time.time() - start_time
         print(f"Move computed in {elapsed:.3f}s")
@@ -104,6 +133,17 @@ class AIPlayer:
                 print(f"  {i}. {move.count} units from ({move.x_from},{move.y_from}) to ({move.x_to},{move.y_to})")
         
         return len(move_tuples), move_tuples
+    
+    def _get_position_hash(self) -> str:
+        """
+        Generate a hash of current position for loop detection.
+        Uses positions of our groups only (opponent included in evaluation).
+        """
+        our_groups = self.game_state.get_our_groups()
+        # Sort to ensure consistent hash
+        sorted_groups = sorted(our_groups, key=lambda g: (g[0], g[1]))
+        # Create simple hash: "x1,y1,c1;x2,y2,c2;..."
+        return ";".join(f"{x},{y},{count}" for x, y, count in sorted_groups)
     
     def get_fallback_move(self) -> List[Move]:
         """Get a simple fallback move if Alpha-Beta fails."""

@@ -5,12 +5,20 @@ Unified AI Configuration
 All tunable parameters for the Vampires vs Werewolves AI in one place.
 Edit these values to customize the AI's behavior, or use configure.py for interactive setup.
 
+REFACTORED VERSION (2024):
+Simplified evaluation parameters with clear grouping and linear weights.
+See evaluation.py for implementation details.
+
 Categories:
   - Server Connection
-  - Search Algorithm  
+  - Search Algorithm
   - Move Generation
-  - Evaluation Weights
+  - Evaluation: Material
+  - Evaluation: Fragmentation
+  - Evaluation: Resources
+  - Evaluation: Tactical
   - Play Style Presets
+  - Debug & Logging
 """
 
 # ============================================================
@@ -32,7 +40,7 @@ SEARCH_MAX_DEPTH = 4
 
 # Time limit per move in seconds (must be < 2.0 for server)
 # Recommended: 1.5-1.8 to leave buffer for network/processing
-SEARCH_TIME_LIMIT = 1.8
+SEARCH_TIME_LIMIT = 1.9
 
 # Enable iterative deepening (searches depth 1, then 2, then 3, etc.)
 # Ensures we always have a move even if we run out of time
@@ -70,70 +78,113 @@ SPLIT_RATIOS = [1.0, 0.5]
 # Minimum win probability to attack humans/enemies
 # 0.5 = 50% chance (risky), 0.7 = 70% (default), 0.8 = 80% (conservative)
 # Higher = fewer attacks, but more likely to win when we do attack
-ATTACK_MIN_WIN_PROBABILITY = 0.7
+ATTACK_MIN_WIN_PROBABILITY = 0.8
 
 
 # ============================================================
-# EVALUATION WEIGHTS - MATERIAL & GROUPS
+# EVALUATION: MATERIAL
 # ============================================================
-# How much we value having more units than opponent
-# Higher = prioritizes growing army size
-WEIGHT_MATERIAL = 100
-
-# Bonus for having exactly 1 group (concentrated force)
-# Positive = encourages concentration
-BONUS_ONE_GROUP = 100
-
-# Penalty for having 2 groups
-# 0 = acceptable, positive = penalize
-PENALTY_TWO_GROUPS = 0
-
-# Penalty for having 3 groups (fragmentation starting)
-# Higher = strongly discourages splitting beyond 2 groups
-PENALTY_THREE_GROUPS = 200
-
-# Penalty PER group beyond 3 (catastrophic fragmentation)
-# Higher = extremely discourages 4+ groups
-PENALTY_EXCESS_GROUPS = 500
-
-# Penalty per small group (below SMALL_GROUP_THRESHOLD)
-# Higher = discourages keeping small weak groups
-PENALTY_SMALL_GROUP = 100
-
-# Threshold for what counts as a "small" group
-# Groups with fewer units than this are penalized
-SMALL_GROUP_THRESHOLD = 10
+# Weight per unit advantage
+# Higher = prioritizes growing army size over positioning
+# Old: WEIGHT_MATERIAL = 100
+EVAL_MATERIAL_WEIGHT = 100
 
 
 # ============================================================
-# EVALUATION WEIGHTS - TACTICAL
+# EVALUATION: FRAGMENTATION
 # ============================================================
-# How much we value being close to winnable human groups
-# Higher = more aggressive human conversion
-WEIGHT_HUMAN_PROXIMITY = 40
+# Ideal number of groups to maintain (1-2 recommended)
+# Groups <= this threshold receive concentration bonus
+# Groups > this threshold receive linear penalties
+EVAL_IDEAL_GROUP_COUNT = 2
 
-# How much we value controlling the center of the map
-# Higher = more territorial/strategic play
-WEIGHT_CENTER_CONTROL = 2
+# Bonus for maintaining concentrated forces (groups <= ideal)
+# Old: BONUS_ONE_GROUP = 100
+EVAL_CONCENTRATION_BONUS = 100
 
-# How much we value favorable combat matchups
-# Higher = more aggressive when we have advantage
-WEIGHT_THREAT_ASSESSMENT = 20
+# Linear penalty per excess group beyond ideal count
+# Example: 3 groups with IDEAL=2 → penalty = 1 * 250 = -250
+# Old system: 3 groups = -200, 4 groups = -700 (non-linear)
+# New: Linear progression, calibrated to match old behavior
+EVAL_FRAGMENTATION_PENALTY = 250
 
-# Penalty for splitting when enemy is nearby (distance <= 3)
-# Higher = more likely to concentrate forces when threatened
-PENALTY_SPLIT_NEAR_ENEMY = 20
+# Threshold for "small" groups (penalized separately)
+# Old: SMALL_GROUP_THRESHOLD = 10
+EVAL_SMALL_GROUP_THRESHOLD = 10
+
+# Penalty per small group
+# Old: PENALTY_SMALL_GROUP = 100
+EVAL_SMALL_GROUP_PENALTY = 100
 
 
 # ============================================================
-# GROUP STRATEGY THRESHOLDS
+# EVALUATION: RESOURCES (Human Conversion)
 # ============================================================
-# Ideal group count range (for evaluation logic)
+# Maximum distance to consider a human group "accessible"
+# Old system: Used <= 2 for close, <= 4 for moderate distance
+EVAL_RESOURCE_MAX_DISTANCE = 4
+
+# Minimum win probability to consider a human group "winnable"
+# Should match or be close to ATTACK_MIN_WIN_PROBABILITY
+# Old system: Used 0.7 for "high confidence"
+EVAL_RESOURCE_MIN_WIN_PROB = 0.7
+
+# Value per accessible winnable human group
+# Old: WEIGHT_HUMAN_PROXIMITY = 40 (complex distance weighting)
+# New: Simple count × value (no distance decay within range)
+EVAL_RESOURCE_VALUE = 40
+
+
+# ============================================================
+# EVALUATION: TACTICAL
+# ============================================================
+# Range to check for combat matchups (threat assessment)
+# Old: <= 2 for "close proximity"
+EVAL_TACTICAL_THREAT_RANGE = 2
+
+# Strength ratio for "favorable" matchup (1.5 = 50% advantage)
+# Old: >= 1.5x to "kill them"
+EVAL_TACTICAL_ADVANTAGE_RATIO = 1.5
+
+# Value per favorable (or unfavorable) matchup
+# Old: WEIGHT_THREAT_ASSESSMENT = 20
+EVAL_TACTICAL_MATCHUP_VALUE = 20
+
+# Weight for center control scoring
+# Old: WEIGHT_CENTER_CONTROL = 2
+EVAL_CENTER_CONTROL_WEIGHT = 2
+
+# Distance threshold for "enemy is close" (triggers concentration penalty)
+# Old: <= 3 for "enemy nearby"
+EVAL_TACTICAL_CLOSE_RANGE = 3
+
+# Penalty per excess group when enemy is close
+# Old: PENALTY_SPLIT_NEAR_ENEMY = 20
+EVAL_SPLIT_NEAR_ENEMY_PENALTY = 20
+
+
+# ============================================================
+# BACKWARD COMPATIBILITY
+# ============================================================
+# Old parameter names (for reference, not used by new evaluation)
+# Kept for any external scripts that might reference them
+
+WEIGHT_MATERIAL = EVAL_MATERIAL_WEIGHT
+BONUS_ONE_GROUP = EVAL_CONCENTRATION_BONUS
+PENALTY_TWO_GROUPS = 0  # Old: neutral for 2 groups
+PENALTY_THREE_GROUPS = EVAL_FRAGMENTATION_PENALTY  # Approximate
+PENALTY_EXCESS_GROUPS = EVAL_FRAGMENTATION_PENALTY  # Approximate
+PENALTY_SMALL_GROUP = EVAL_SMALL_GROUP_PENALTY
+SMALL_GROUP_THRESHOLD = EVAL_SMALL_GROUP_THRESHOLD
+WEIGHT_HUMAN_PROXIMITY = EVAL_RESOURCE_VALUE
+WEIGHT_CENTER_CONTROL = EVAL_CENTER_CONTROL_WEIGHT
+WEIGHT_THREAT_ASSESSMENT = EVAL_TACTICAL_MATCHUP_VALUE
+PENALTY_SPLIT_NEAR_ENEMY = EVAL_SPLIT_NEAR_ENEMY_PENALTY
+
+# Old thresholds (not used in new system)
 IDEAL_MIN_GROUPS = 1
-IDEAL_MAX_GROUPS = 2
-
-# When we start applying excessive group penalties
-EXCESSIVE_GROUPS_THRESHOLD = 3
+IDEAL_MAX_GROUPS = EVAL_IDEAL_GROUP_COUNT
+EXCESSIVE_GROUPS_THRESHOLD = EVAL_IDEAL_GROUP_COUNT + 1
 
 
 # ============================================================
@@ -143,14 +194,21 @@ EXCESSIVE_GROUPS_THRESHOLD = 3
 # Or use: python3 configure.py --preset <name>
 
 # ------------------------------------------------------------
+# BALANCED (DEFAULT): Current settings above
+# ------------------------------------------------------------
+# Good all-around performance with 1-2 groups, moderate risk
+
+# ------------------------------------------------------------
 # AGGRESSIVE: Deep search, risky attacks, multi-group tactics
 # ------------------------------------------------------------
 # SEARCH_MAX_DEPTH = 5
 # MAX_GROUPS_PER_TURN = 3
 # ATTACK_MIN_WIN_PROBABILITY = 0.5
 # SPLIT_RATIOS = [1.0, 2/3, 0.5]
-# PENALTY_THREE_GROUPS = 100
-# WEIGHT_HUMAN_PROXIMITY = 60
+# EVAL_IDEAL_GROUP_COUNT = 3
+# EVAL_FRAGMENTATION_PENALTY = 150
+# EVAL_RESOURCE_MIN_WIN_PROB = 0.5
+# EVAL_RESOURCE_VALUE = 60
 
 # ------------------------------------------------------------
 # DEFENSIVE: Strong concentration, safe attacks only
@@ -159,8 +217,10 @@ EXCESSIVE_GROUPS_THRESHOLD = 3
 # MAX_GROUPS_PER_TURN = 2
 # ATTACK_MIN_WIN_PROBABILITY = 0.8
 # SPLIT_RATIOS = [1.0]
-# PENALTY_THREE_GROUPS = 500
-# BONUS_ONE_GROUP = 200
+# EVAL_IDEAL_GROUP_COUNT = 1
+# EVAL_CONCENTRATION_BONUS = 200
+# EVAL_FRAGMENTATION_PENALTY = 400
+# EVAL_RESOURCE_MIN_WIN_PROB = 0.8
 
 # ------------------------------------------------------------
 # SPEED: Fast decisions, less computation
@@ -175,7 +235,8 @@ EXCESSIVE_GROUPS_THRESHOLD = 3
 # ------------------------------------------------------------
 # SEARCH_MAX_DEPTH = 4
 # ATTACK_MIN_WIN_PROBABILITY = 0.6
-# WEIGHT_CENTER_CONTROL = 10
+# EVAL_CENTER_CONTROL_WEIGHT = 10
+# EVAL_IDEAL_GROUP_COUNT = 2
 # MAX_GROUPS_PER_TURN = 3
 
 
