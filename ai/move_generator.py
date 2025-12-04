@@ -1,9 +1,14 @@
 """Move generation and battle simulation for Vampires VS Werewolves."""
-from typing import List, Tuple, Set
+from typing import List, Tuple, Set, Dict
 import random
+from itertools import product
 from game_state import GameState, Move, Species
-from config import (MIN_GROUP_SIZE, MAX_GROUPS_PER_TURN, 
-                    MIN_SPLIT_SIZE, SPLIT_RATIOS)
+from config import (MIN_GROUP_SIZE, MAX_GROUPS_PER_TURN,
+                    MIN_SPLIT_SIZE, SPLIT_RATIOS, ATTACK_MIN_WIN_PROBABILITY)
+
+
+# Maximum moves to consider per group in multi-group combinations
+MAX_MOVES_PER_GROUP_COMBO = 15
 
 
 def calculate_battle_probability(attackers: int, defenders: int) -> float:
@@ -98,18 +103,94 @@ def get_battle_expected_value(attackers: int, defenders: int, is_human: bool = F
     return expected_attackers, expected_defenders
 
 
+def generate_split_and_move_combos(state: GameState, x: int, y: int, count: int) -> List[List[Move]]:
+    """
+    Generate move combinations where a group splits and BOTH parts move in the same turn.
+
+    This is the key tactical feature: Instead of splitting and leaving half behind,
+    we can split 30 units into 15+15 and have both 15-unit groups move different directions.
+
+    Example: 30 units at (5,5) can:
+    - Split into 15+15
+    - One half moves north to (4,5)
+    - Other half moves east to (5,6)
+    - Result: Pincer formation in one turn!
+
+    Args:
+        state: Current game state
+        x, y: Source cell coordinates
+        count: Number of creatures in the cell
+
+    Returns:
+        List of move combos where both split parts move
+    """
+    combos = []
+
+    # Only split if we have enough units
+    if count < MIN_SPLIT_SIZE:
+        return combos
+
+    # Calculate split amounts (we only do 50/50 splits for now)
+    half = count // 2
+    other_half = count - half
+
+    # Both halves must be viable
+    if half < MIN_GROUP_SIZE or other_half < MIN_GROUP_SIZE:
+        return combos
+
+    # Get all valid directions and their target cells
+    valid_directions = []
+    for dx, dy in GameState.DIRECTIONS:
+        target_x = x + dx
+        target_y = y + dy
+        if 0 <= target_x < state.rows and 0 <= target_y < state.cols:
+            target_cell = state.board[target_x][target_y]
+            valid_directions.append((dx, dy, target_x, target_y, target_cell))
+
+    # Generate combos where both halves move to DIFFERENT directions
+    for i, (dx1, dy1, tx1, ty1, tc1) in enumerate(valid_directions):
+        for dx2, dy2, tx2, ty2, tc2 in valid_directions[i+1:]:  # Only pairs to avoid duplicates
+            # Can't send both halves to the same target
+            if (tx1, ty1) == (tx2, ty2):
+                continue
+
+            # Check if both moves are valid attacks (if targeting humans)
+            move1_valid = True
+            move2_valid = True
+
+            if tc1.humans > 0:
+                win_prob = calculate_battle_probability(half, tc1.humans)
+                if win_prob < ATTACK_MIN_WIN_PROBABILITY:
+                    move1_valid = False
+
+            if tc2.humans > 0:
+                win_prob = calculate_battle_probability(other_half, tc2.humans)
+                if win_prob < ATTACK_MIN_WIN_PROBABILITY:
+                    move2_valid = False
+
+            # Only add if both moves are valid
+            if move1_valid and move2_valid:
+                move1 = Move(x, y, tx1, ty1, half)
+                move2 = Move(x, y, tx2, ty2, other_half)
+                combos.append([move1, move2])
+
+    return combos
+
+
 def generate_all_moves(state: GameState, for_opponent: bool = False) -> List[List[Move]]:
     """
     Generate all legal move combinations.
-    
-    FIXED: Now supports multi-group moves per turn.
+
+    ENHANCED: Now supports split-and-move-both-groups in the same turn!
     - Single-group moves: Each group moves independently
+    - Split moves: A group splits and BOTH halves move different directions
     - Multi-group moves: Top strategic groups can move simultaneously (up to MAX_GROUPS_PER_TURN)
-    - Uses smart heuristics to avoid combinatorial explosion:
-      * Prioritizes larger groups
-      * Only combines groups that are far apart (distance > 3)
-      * Respects Rule 5: No cell can be both source and target
-    
+
+    This enables tactical maneuvers like:
+    - Pincer attacks: Split and attack from two sides
+    - Flanking: One half attacks, one half cuts off retreat
+    - Expansion: Split to capture multiple human groups at once
+
     Rules:
     1. At least one movement per turn
     2. Can only move your species
@@ -117,25 +198,25 @@ def generate_all_moves(state: GameState, for_opponent: bool = False) -> List[Lis
     4. Can move in 8 directions (unless on borders)
     5. A cell cannot be both target and source in the same turn
     6. Must move at least one creature
-    
+
     Args:
         state: Current game state
         for_opponent: If True, generate moves for opponent
-        
+
     Returns:
         List of move combinations (each combination is a list of moves)
     """
     species = state.opponent_species if for_opponent else state.our_species
     if species is None:
         return []
-    
+
     groups = state.get_opponent_groups() if for_opponent else state.get_our_groups()
-    
+
     if not groups:
         return []
-    
+
     all_move_combos = []
-    
+
     # Generate single-group moves for each group
     group_moves = []  # List of (group_info, moves_list)
     for x, y, count in groups:
@@ -144,7 +225,11 @@ def generate_all_moves(state: GameState, for_opponent: bool = False) -> List[Lis
             group_moves.append(((x, y, count), moves))
             # Add each single move as a combo
             all_move_combos.extend([[move] for move in moves])
-    
+
+        # NEW: Generate split-and-move combos (both halves move same turn)
+        split_combos = generate_split_and_move_combos(state, x, y, count)
+        all_move_combos.extend(split_combos)
+
     # Generate multi-group moves (strategic combinations)
     # To avoid combinatorial explosion, we use smart heuristics:
     # 1. Only combine top groups by size
@@ -152,29 +237,25 @@ def generate_all_moves(state: GameState, for_opponent: bool = False) -> List[Lis
     if len(group_moves) >= 2:
         # Sort groups by size (descending) to prioritize important groups
         sorted_group_moves = sorted(group_moves, key=lambda gm: gm[0][2], reverse=True)
-        
+
         # Take top groups (up to MAX_GROUPS_PER_TURN)
         top_groups = sorted_group_moves[:min(MAX_GROUPS_PER_TURN, len(sorted_group_moves))]
-        
+
         # Try combining moves from top groups
         if len(top_groups) == 2:
             (x1, y1, c1), moves1 = top_groups[0]
             (x2, y2, c2), moves2 = top_groups[1]
-            
+
             # Generate combinations of moves from both groups
-            # FIXED: Instead of checking distance, we check actual Rule 5 violations
-            # This allows more realistic multi-group moves
-            multi_count = 0
-            for move1 in moves1[:10]:  # Limit to top 10 moves per group to control branching
-                for move2 in moves2[:10]:
+            # Use configurable limit instead of hardcoded 10
+            for move1 in moves1[:MAX_MOVES_PER_GROUP_COMBO]:
+                for move2 in moves2[:MAX_MOVES_PER_GROUP_COMBO]:
                     # Check Rule 5: source and target can't overlap
                     sources = {(move1.x_from, move1.y_from), (move2.x_from, move2.y_from)}
                     targets = {(move1.x_to, move1.y_to), (move2.x_to, move2.y_to)}
                     if not sources & targets:  # No overlap
                         all_move_combos.append([move1, move2])
-                        multi_count += 1
 
-    
     return all_move_combos if all_move_combos else [[]]
 
 
@@ -240,12 +321,11 @@ def generate_moves_from_cell(state: GameState, x: int, y: int, count: int, debug
                 # Filter out risky attacks on human groups
                 if target_cell.humans > 0:
                     win_prob = calculate_battle_probability(amount, target_cell.humans)
-                    # Only attack humans if we have at least 70% win chance
-                    # This prevents weak attacks like 5v5 (50% chance) that lead to pyrrhic victories
-                    # We want to be confident we'll win AND maintain enough forces
-                    if win_prob < 0.7:
+                    # Only attack humans if we meet minimum win probability from config
+                    # This prevents weak attacks that lead to pyrrhic victories
+                    if win_prob < ATTACK_MIN_WIN_PROBABILITY:
                         if debug:
-                            print(f"    FILTERED: {amount} units vs {target_cell.humans} humans (win prob {win_prob:.2%} < 70%)")
+                            print(f"    FILTERED: {amount} units vs {target_cell.humans} humans (win prob {win_prob:.2%} < {ATTACK_MIN_WIN_PROBABILITY:.0%})")
                         continue
                     elif debug:
                         print(f"    ALLOWED: {amount} units vs {target_cell.humans} humans (win prob {win_prob:.2%})")

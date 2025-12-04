@@ -40,7 +40,8 @@ SEARCH_MAX_DEPTH = 4
 
 # Time limit per move in seconds (must be < 2.0 for server)
 # Recommended: 1.5-1.8 to leave buffer for network/processing
-SEARCH_TIME_LIMIT = 1.9
+# Set to 1.6 for safety margin (network latency + GC pauses)
+SEARCH_TIME_LIMIT = 1.6
 
 # Enable iterative deepening (searches depth 1, then 2, then 3, etc.)
 # Ensures we always have a move even if we run out of time
@@ -76,9 +77,10 @@ SPLIT_RATIOS = [1.0, 0.5]
 # BATTLE MECHANICS
 # ============================================================
 # Minimum win probability to attack humans/enemies
-# 0.5 = 50% chance (risky), 0.7 = 70% (default), 0.8 = 80% (conservative)
+# 0.5 = 50% chance (aggressive), 0.7 = 70% (balanced), 0.8 = 80% (conservative)
 # Higher = fewer attacks, but more likely to win when we do attack
-ATTACK_MIN_WIN_PROBABILITY = 0.8
+# AGGRESSIVE MODE: 0.5 for riskier plays and faster human conversion
+ATTACK_MIN_WIN_PROBABILITY = 0.5
 
 
 # ============================================================
@@ -133,6 +135,36 @@ EVAL_RESOURCE_MIN_WIN_PROB = 0.7
 # Old: WEIGHT_HUMAN_PROXIMITY = 40 (complex distance weighting)
 # New: Simple count × value (no distance decay within range)
 EVAL_RESOURCE_VALUE = 40
+
+
+# ============================================================
+# EVALUATION: GAME PHASE DETECTION
+# ============================================================
+# Threshold for determining early game vs mid game
+# Based on percentage of board cells with humans
+# 0.15 = 15% of cells have humans → early game
+# Lower = earlier transition to mid game focus
+PHASE_EARLY_GAME_HUMAN_THRESHOLD = 0.15
+
+# Random noise for tie-breaking (helps avoid repetition)
+# Set to 0 to disable, or small value like 0.1-1.0
+EVAL_RANDOM_NOISE = 0.5
+
+
+# ============================================================
+# EVALUATION: EARLY GAME BEHAVIOR
+# ============================================================
+# Weight for proximity to nearest humans in early game
+# This creates a directional incentive to move TOWARD humans
+# Formula: (human_count * weight) / (1 + distance)
+# Higher = more aggressive human collection
+# 50 = balanced (5-human village at dist 2 = ~83 points)
+EVAL_HUMAN_PROXIMITY_WEIGHT = 50
+
+# Whether to use center control in early game
+# False = ignore center until mid game (recommended to prevent center rushing)
+# True = use minimal center control even in early game
+EVAL_EARLY_GAME_CENTER_CONTROL = False
 
 
 # ============================================================
