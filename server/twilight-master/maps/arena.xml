@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Map Rows="10" Columns="10">
+  <!-- Central human cluster (high value target) -->
+  <Humans X="4" Y="4" Count="15"/>
+  <Humans X="5" Y="5" Count="15"/>
+
+  <!-- Corner humans (equidistant from both players) -->
+  <Humans X="0" Y="9" Count="5"/>
+  <Humans X="9" Y="0" Count="5"/>
+
+  <!-- Symmetric player positions (diagonal corners) -->
+  <Vampires X="0" Y="0" Count="12"/>
+  <Werewolves X="9" Y="9" Count="12"/>
+</Map>

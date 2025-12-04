@@ -14,15 +14,16 @@ import (
 type server struct {
 	*Map
 	name [2]string
+	port int
 }
 
 func (s *server) run() {
-	log.Println("Starting tcp server")
-	l, err := net.Listen("tcp", ":5555")
-	defer l.Close()
+	log.Printf("Starting tcp server on port %d", s.port)
+	l, err := net.Listen("tcp", fmt.Sprintf(":%d", s.port))
 	if err != nil {
 		panic(err.Error())
 	}
+	defer l.Close()
 
 	// first player
 	con0, err := l.Accept()

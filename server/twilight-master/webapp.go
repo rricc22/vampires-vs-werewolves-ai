@@ -2,13 +2,14 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
 	"strconv"
 )
 
-func startWebApp(m *Map) {
+func startWebApp(m *Map, port int) {
 	fs := http.FileServer(http.Dir("static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
@@ -35,8 +36,8 @@ func startWebApp(m *Map) {
 		json.NewEncoder(w).Encode(m.history[offset:])
 	})
 
-	log.Println("Web server running on http://localhost:8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Printf("Web server running on http://localhost:%d", port)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", port), nil))
 }
 
 type packed struct {

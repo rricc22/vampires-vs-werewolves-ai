@@ -1,0 +1,34 @@
+{
+  "test_run": {
+    "timestamp": "2025-12-04T15:32:27.052909",
+    "total_duration_seconds": 13.3,
+    "configuration": {
+      "maps": [
+        "testmap.xml"
+      ],
+      "p1_preset": "balanced",
+      "p2_preset": "balanced",
+      "rounds": 1,
+      "timeout": 60,
+      "log_dir": "/home/riccardo/Documents/vampires-vs-werewolves-ai/LOGS/test_run_20251204_153213"
+    }
+  },
+  "summary": {
+    "total_games": 1,
+    "player1_wins": 0,
+    "player2_wins": 0,
+    "draws": 1,
+    "errors": 0
+  },
+  "games": [
+    {
+      "map_name": "testmap.xml",
+      "winner": "draw",
+      "total_turns": 102,
+      "duration_seconds": 13.3,
+      "human_conversions": 2,
+      "pvp_battles": 0,
+      "error": null
+    }
+  ]
+}

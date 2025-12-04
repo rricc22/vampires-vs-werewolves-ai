@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Map Rows="12" Columns="4">
+  <!-- Humans scattered along corridor -->
+  <Humans X="1" Y="2" Count="5"/>
+  <Humans X="2" Y="5" Count="8"/>
+  <Humans X="1" Y="8" Count="5"/>
+
+  <!-- Players at opposite ends -->
+  <Vampires X="0" Y="0" Count="10"/>
+  <Werewolves X="3" Y="11" Count="10"/>
+</Map>

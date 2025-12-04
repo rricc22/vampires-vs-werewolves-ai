@@ -11,6 +11,8 @@ var rows int
 var columns int
 var humans int
 var monster int
+var tcpPort int
+var webPort int
 
 func init() {
 	flag.StringVar(&mapPath, "map", "", "path to the map to load (or save if randomly generating)")
@@ -19,6 +21,8 @@ func init() {
 	flag.IntVar(&columns, "columns", 10, "total number of columns")
 	flag.IntVar(&humans, "humans", 16, "quantity of humans group")
 	flag.IntVar(&monster, "monster", 8, "quantity of monster in the start case")
+	flag.IntVar(&tcpPort, "port", 5555, "TCP port for game server")
+	flag.IntVar(&webPort, "webport", 8080, "HTTP port for web UI")
 }
 
 func main() {
@@ -36,7 +40,7 @@ func main() {
 		m = generate(mapPath, rows, columns, humans, monster)
 	}
 	m.updateHistory()
-	s := server{m, names}
+	s := server{m, names, tcpPort}
 	go s.run()
-	startWebApp(s.Map)
+	startWebApp(s.Map, webPort)
 }
