@@ -3,7 +3,7 @@ Unified AI Configuration
 ========================
 
 All tunable parameters for the Vampires vs Werewolves AI in one place.
-Edit these values to customize the AI's behavior, or use configure.py for interactive setup.
+Edit these values to customize the AI's behavior, or use modes.py for quick preset switching.
 
 REFACTORED VERSION (2024):
 Simplified evaluation parameters with clear grouping and linear weights.
@@ -17,7 +17,7 @@ Categories:
   - Evaluation: Fragmentation
   - Evaluation: Resources
   - Evaluation: Tactical
-  - Play Style Presets
+  - Mode System
   - Debug & Logging
 """
 
@@ -36,12 +36,12 @@ SERVER_PORT = 5555
 # - 3: Fast, basic strategy
 # - 4: Balanced (default)
 # - 5: Deep, strong play (may timeout on complex positions)
-SEARCH_MAX_DEPTH = 4
+SEARCH_MAX_DEPTH = 10
 
 # Time limit per move in seconds (must be < 2.0 for server)
 # Recommended: 1.5-1.8 to leave buffer for network/processing
 # Set to 1.6 for safety margin (network latency + GC pauses)
-SEARCH_TIME_LIMIT = 1.6
+SEARCH_TIME_LIMIT = 2
 
 # Enable iterative deepening (searches depth 1, then 2, then 3, etc.)
 # Ensures we always have a move even if we run out of time
@@ -54,23 +54,23 @@ SEARCH_ITERATIVE_DEEPENING = True
 # Minimum group size - don't create groups smaller than this
 # Higher = less fragmentation, but less tactical flexibility
 # Recommended: 5-10
-MIN_GROUP_SIZE = 5
+MIN_GROUP_SIZE = 6
 
 # Maximum groups that can move simultaneously per turn
 # 1 = simple moves only, 2 = tactical coordination (default), 3 = complex multi-group
-MAX_GROUPS_PER_TURN = 2
+MAX_GROUPS_PER_TURN = 3
 
 # Minimum size before allowing a group to split
 # Prevents small groups from fragmenting further
 # Recommended: 10-15
-MIN_SPLIT_SIZE = 10
+MIN_SPLIT_SIZE = 6
 
 # Split ratios to consider when moving from a cell
 # [1.0] = always move everything (no splits, maximum concentration)
 # [1.0, 0.5] = move all OR half (allows strategic 2-group splits)
 # [1.0, 2/3, 0.5, 1/3] = more options (more fragmentation risk)
 # Recommended: [1.0] for defensive, [1.0, 0.5] for balanced
-SPLIT_RATIOS = [1.0, 0.5]
+SPLIT_RATIOS = [1.0, 0.6666666666666666, 0.5]
 
 
 # ============================================================
@@ -79,8 +79,8 @@ SPLIT_RATIOS = [1.0, 0.5]
 # Minimum win probability to attack humans/enemies
 # 0.5 = 50% chance (aggressive), 0.7 = 70% (balanced), 0.8 = 80% (conservative)
 # Higher = fewer attacks, but more likely to win when we do attack
-# AGGRESSIVE MODE: 0.5 for riskier plays and faster human conversion
-ATTACK_MIN_WIN_PROBABILITY = 0.5
+# VERY AGGRESSIVE MODE: 0.4 allows 5v5 (50%) and even 4v5 (40%) attacks
+ATTACK_MIN_WIN_PROBABILITY = 0.2
 
 
 # ============================================================
@@ -220,56 +220,13 @@ EXCESSIVE_GROUPS_THRESHOLD = EVAL_IDEAL_GROUP_COUNT + 1
 
 
 # ============================================================
-# PLAY STYLE PRESETS
+# MODE SYSTEM
 # ============================================================
-# Uncomment a preset below to quickly change play style
-# Or use: python3 configure.py --preset <name>
-
-# ------------------------------------------------------------
-# BALANCED (DEFAULT): Current settings above
-# ------------------------------------------------------------
-# Good all-around performance with 1-2 groups, moderate risk
-
-# ------------------------------------------------------------
-# AGGRESSIVE: Deep search, risky attacks, multi-group tactics
-# ------------------------------------------------------------
-# SEARCH_MAX_DEPTH = 5
-# MAX_GROUPS_PER_TURN = 3
-# ATTACK_MIN_WIN_PROBABILITY = 0.5
-# SPLIT_RATIOS = [1.0, 2/3, 0.5]
-# EVAL_IDEAL_GROUP_COUNT = 3
-# EVAL_FRAGMENTATION_PENALTY = 150
-# EVAL_RESOURCE_MIN_WIN_PROB = 0.5
-# EVAL_RESOURCE_VALUE = 60
-
-# ------------------------------------------------------------
-# DEFENSIVE: Strong concentration, safe attacks only
-# ------------------------------------------------------------
-# SEARCH_MAX_DEPTH = 4
-# MAX_GROUPS_PER_TURN = 2
-# ATTACK_MIN_WIN_PROBABILITY = 0.8
-# SPLIT_RATIOS = [1.0]
-# EVAL_IDEAL_GROUP_COUNT = 1
-# EVAL_CONCENTRATION_BONUS = 200
-# EVAL_FRAGMENTATION_PENALTY = 400
-# EVAL_RESOURCE_MIN_WIN_PROB = 0.8
-
-# ------------------------------------------------------------
-# SPEED: Fast decisions, less computation
-# ------------------------------------------------------------
-# SEARCH_MAX_DEPTH = 3
-# SEARCH_TIME_LIMIT = 1.0
-# MAX_GROUPS_PER_TURN = 1
-# SPLIT_RATIOS = [1.0]
-
-# ------------------------------------------------------------
-# EXPERIMENTAL: Testing new strategies
-# ------------------------------------------------------------
-# SEARCH_MAX_DEPTH = 4
-# ATTACK_MIN_WIN_PROBABILITY = 0.6
-# EVAL_CENTER_CONTROL_WEIGHT = 10
-# EVAL_IDEAL_GROUP_COUNT = 2
-# MAX_GROUPS_PER_TURN = 3
+# To change AI behavior, use play_game.sh which lets you select a mode,
+# or manually run: python3 ai/modes.py <mode_name>
+#
+# Available modes: balanced, aggressive, defensive, speed, tactical, experimental
+# Edit ai/modes.py to customize each mode's parameters
 
 
 # ============================================================

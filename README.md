@@ -59,7 +59,8 @@ ai/
 ├── move_generator.py   # Move generation & battle logic
 ├── game_state.py       # Board state representation
 ├── client.py           # TCP client for server protocol
-└── config.py           # Configuration (thresholds, limits)
+├── config.py           # Main configuration file
+└── modes.py            # Mode presets (balanced, aggressive, etc.)
 
 tests/
 └── test_ai.py          # Unit tests
@@ -79,24 +80,40 @@ maps/                   # Game maps (.xml)
 
 ## Configuration
 
-Adjust AI behavior in `ai/config.py`:
+The AI has several pre-configured modes for different play styles:
 
-```python
-SPLIT_RATIOS = [1.0, 0.5]     # Allow moving all or half of a group
-MIN_GROUP_SIZE = 5            # Minimum viable group size
-IDEAL_MAX_GROUPS = 2          # Target 1-2 groups
-SMALL_GROUP_THRESHOLD = 10    # Groups below this are penalized
+### Using play_game.sh (Recommended)
+```bash
+bash play_game.sh
+# Choose a mode when prompted:
+# 1. balanced     - Default, well-rounded strategy
+# 2. aggressive   - Deep search, risky attacks, fast expansion
+# 3. defensive    - Safe attacks, strong concentration
+# 4. speed        - Fast decisions, shallow search
+# 5. tactical     - Multi-group coordination master
+# 6. experimental - Testing new strategies
+# 7. current      - Use current config without changes
 ```
 
-Adjust search depth/time in `ai/ai_player.py`:
+### Manual Mode Change
+```bash
+python3 ai/modes.py aggressive
+```
+
+### Customize Modes
+Edit `ai/modes.py` to adjust parameters for each mode:
 
 ```python
-best_move = alpha_beta_search(
-    state=self.game_state,
-    max_depth=4,        # Search depth
-    time_limit=1.8      # Seconds
-)
+AGGRESSIVE = {
+    "SEARCH_MAX_DEPTH": 5,           # How deep to search
+    "ATTACK_MIN_WIN_PROBABILITY": 0.1,  # Attack threshold
+    "SPLIT_RATIOS": [1.0, 2/3, 0.5], # Split options
+    # ... more parameters
+}
 ```
+
+### Direct Config Edit
+Advanced users can directly edit `ai/config.py` for fine-grained control.
 
 ## Requirements
 

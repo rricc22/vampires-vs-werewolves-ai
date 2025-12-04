@@ -72,9 +72,9 @@ echo -e "${GREEN}✓${NC} Selected map: ${YELLOW}$MAP_NAME${NC}"
 echo ""
 
 # ============================================================
-# SELECT CONFIGURATION PRESET
+# SELECT CONFIGURATION MODE
 # ============================================================
-echo -e "${CYAN}⚙️  Select AI Configuration:${NC}"
+echo -e "${CYAN}⚙️  Select AI Mode:${NC}"
 echo ""
 echo -e "  ${GREEN}1.${NC} balanced     - Default, well-rounded strategy"
 echo -e "  ${GREEN}2.${NC} aggressive   - Deep search, risky attacks, fast expansion"
@@ -85,31 +85,31 @@ echo -e "  ${GREEN}6.${NC} experimental - Testing new strategies"
 echo -e "  ${GREEN}7.${NC} current      - Use current config without changes"
 echo ""
 
-read -p "Choose config (1-7) [default: 7]: " CONFIG_CHOICE
-CONFIG_CHOICE=${CONFIG_CHOICE:-7}
+read -p "Choose mode (1-7) [default: 7]: " MODE_CHOICE
+MODE_CHOICE=${MODE_CHOICE:-7}
 
-case $CONFIG_CHOICE in
-    1) CONFIG_PRESET="balanced" ;;
-    2) CONFIG_PRESET="aggressive" ;;
-    3) CONFIG_PRESET="defensive" ;;
-    4) CONFIG_PRESET="speed" ;;
-    5) CONFIG_PRESET="tactical" ;;
-    6) CONFIG_PRESET="experimental" ;;
-    7) CONFIG_PRESET="current" ;;
+case $MODE_CHOICE in
+    1) MODE_NAME="balanced" ;;
+    2) MODE_NAME="aggressive" ;;
+    3) MODE_NAME="defensive" ;;
+    4) MODE_NAME="speed" ;;
+    5) MODE_NAME="tactical" ;;
+    6) MODE_NAME="experimental" ;;
+    7) MODE_NAME="current" ;;
     *) 
         echo -e "${RED}Invalid choice, using current config${NC}"
-        CONFIG_PRESET="current"
+        MODE_NAME="current"
         ;;
 esac
 
-if [ "$CONFIG_PRESET" != "current" ]; then
-    echo -e "${YELLOW}Applying preset: $CONFIG_PRESET${NC}"
-    python3 configure.py --preset "$CONFIG_PRESET" > /dev/null 2>&1
+if [ "$MODE_NAME" != "current" ]; then
+    echo -e "${YELLOW}Applying mode: $MODE_NAME${NC}"
+    python3 ai/modes.py "$MODE_NAME" > /dev/null 2>&1
     if [ $? -eq 0 ]; then
-        echo -e "${GREEN}✓${NC} Configuration applied: ${YELLOW}$CONFIG_PRESET${NC}"
+        echo -e "${GREEN}✓${NC} Mode applied: ${YELLOW}$MODE_NAME${NC}"
     else
-        echo -e "${RED}✗${NC} Failed to apply preset, using current config"
-        CONFIG_PRESET="current"
+        echo -e "${RED}✗${NC} Failed to apply mode, using current config"
+        MODE_NAME="current"
     fi
 else
     echo -e "${GREEN}✓${NC} Using current configuration"
@@ -120,8 +120,8 @@ echo ""
 # START GAME
 # ============================================================
 echo -e "${BLUE}════════════════════════════════════════════════════════════${NC}"
-echo -e "${YELLOW}Map:${NC}    $MAP_NAME"
-echo -e "${YELLOW}Config:${NC} $CONFIG_PRESET"
+echo -e "${YELLOW}Map:${NC}  $MAP_NAME"
+echo -e "${YELLOW}Mode:${NC} $MODE_NAME"
 echo -e "${BLUE}════════════════════════════════════════════════════════════${NC}"
 echo ""
 

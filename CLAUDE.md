@@ -79,7 +79,7 @@ Search settings in `ai/ai_player.py`:
 - `max_depth=4` - Search depth (3-5 typical)
 - `time_limit=1.8` - Must be under 2.0s server limit
 
-Presets available via `python3 ai/configure.py --preset aggressive|defensive|speed|tactical`
+Mode presets available via `python3 ai/modes.py <mode>` (balanced|aggressive|defensive|speed|tactical|experimental)
 
 ## Server Protocol
 
