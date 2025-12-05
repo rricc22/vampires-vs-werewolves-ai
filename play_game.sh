@@ -72,9 +72,9 @@ echo -e "${GREEN}✓${NC} Selected map: ${YELLOW}$MAP_NAME${NC}"
 echo ""
 
 # ============================================================
-# SELECT CONFIGURATION MODE
+# SELECT CONFIGURATION MODE FOR PLAYER 1
 # ============================================================
-echo -e "${CYAN}⚙️  Select AI Mode:${NC}"
+echo -e "${CYAN}⚙️  Select AI Mode for Player 1 (Vampires):${NC}"
 echo ""
 echo -e "  ${GREEN}1.${NC} balanced     - Default, well-rounded strategy"
 echo -e "  ${GREEN}2.${NC} aggressive   - Deep search, risky attacks, fast expansion"
@@ -85,43 +85,115 @@ echo -e "  ${GREEN}6.${NC} experimental - Testing new strategies"
 echo -e "  ${GREEN}7.${NC} current      - Use current config without changes"
 echo ""
 
-read -p "Choose mode (1-7) [default: 7]: " MODE_CHOICE
-MODE_CHOICE=${MODE_CHOICE:-7}
+read -p "Choose mode for Player 1 (1-7) [default: 7]: " MODE_CHOICE_P1
+MODE_CHOICE_P1=${MODE_CHOICE_P1:-7}
 
-case $MODE_CHOICE in
-    1) MODE_NAME="balanced" ;;
-    2) MODE_NAME="aggressive" ;;
-    3) MODE_NAME="defensive" ;;
-    4) MODE_NAME="speed" ;;
-    5) MODE_NAME="tactical" ;;
-    6) MODE_NAME="experimental" ;;
-    7) MODE_NAME="current" ;;
+case $MODE_CHOICE_P1 in
+    1) MODE_NAME_P1="balanced" ;;
+    2) MODE_NAME_P1="aggressive" ;;
+    3) MODE_NAME_P1="defensive" ;;
+    4) MODE_NAME_P1="speed" ;;
+    5) MODE_NAME_P1="tactical" ;;
+    6) MODE_NAME_P1="experimental" ;;
+    7) MODE_NAME_P1="current" ;;
     *) 
         echo -e "${RED}Invalid choice, using current config${NC}"
-        MODE_NAME="current"
+        MODE_NAME_P1="current"
         ;;
 esac
 
-if [ "$MODE_NAME" != "current" ]; then
-    echo -e "${YELLOW}Applying mode: $MODE_NAME${NC}"
-    python3 ai/modes.py "$MODE_NAME" > /dev/null 2>&1
+echo -e "${GREEN}✓${NC} Player 1 mode: ${YELLOW}$MODE_NAME_P1${NC}"
+echo ""
+
+# ============================================================
+# SELECT CONFIGURATION MODE FOR PLAYER 2
+# ============================================================
+echo -e "${CYAN}⚙️  Select AI Mode for Player 2 (Werewolves):${NC}"
+echo ""
+echo -e "  ${GREEN}1.${NC} balanced     - Default, well-rounded strategy"
+echo -e "  ${GREEN}2.${NC} aggressive   - Deep search, risky attacks, fast expansion"
+echo -e "  ${GREEN}3.${NC} defensive    - Safe attacks, strong concentration"
+echo -e "  ${GREEN}4.${NC} speed        - Fast decisions, shallow search"
+echo -e "  ${GREEN}5.${NC} tactical     - Multi-group coordination master"
+echo -e "  ${GREEN}6.${NC} experimental - Testing new strategies"
+echo -e "  ${GREEN}7.${NC} current      - Use current config without changes"
+echo ""
+
+read -p "Choose mode for Player 2 (1-7) [default: 7]: " MODE_CHOICE_P2
+MODE_CHOICE_P2=${MODE_CHOICE_P2:-7}
+
+case $MODE_CHOICE_P2 in
+    1) MODE_NAME_P2="balanced" ;;
+    2) MODE_NAME_P2="aggressive" ;;
+    3) MODE_NAME_P2="defensive" ;;
+    4) MODE_NAME_P2="speed" ;;
+    5) MODE_NAME_P2="tactical" ;;
+    6) MODE_NAME_P2="experimental" ;;
+    7) MODE_NAME_P2="current" ;;
+    *) 
+        echo -e "${RED}Invalid choice, using current config${NC}"
+        MODE_NAME_P2="current"
+        ;;
+esac
+
+echo -e "${GREEN}✓${NC} Player 2 mode: ${YELLOW}$MODE_NAME_P2${NC}"
+echo ""
+
+# ============================================================
+# PREPARE CONFIGURATIONS
+# ============================================================
+# Create temporary config files for each player
+mkdir -p /tmp/vvw_configs
+
+# Save original config
+cp ai/config.py /tmp/vvw_configs/config_original.py
+
+# Prepare Player 1 config
+if [ "$MODE_NAME_P1" != "current" ]; then
+    echo -e "${YELLOW}Applying mode for Player 1: $MODE_NAME_P1${NC}"
+    python3 ai/modes.py "$MODE_NAME_P1" > /dev/null 2>&1
     if [ $? -eq 0 ]; then
-        echo -e "${GREEN}✓${NC} Mode applied: ${YELLOW}$MODE_NAME${NC}"
+        cp ai/config.py /tmp/vvw_configs/config_p1.py
+        echo -e "${GREEN}✓${NC} Player 1 config ready: ${YELLOW}$MODE_NAME_P1${NC}"
     else
-        echo -e "${RED}✗${NC} Failed to apply mode, using current config"
-        MODE_NAME="current"
+        echo -e "${RED}✗${NC} Failed to apply mode for Player 1, using current config"
+        cp /tmp/vvw_configs/config_original.py /tmp/vvw_configs/config_p1.py
+        MODE_NAME_P1="current"
     fi
 else
-    echo -e "${GREEN}✓${NC} Using current configuration"
+    cp /tmp/vvw_configs/config_original.py /tmp/vvw_configs/config_p1.py
+    echo -e "${GREEN}✓${NC} Player 1 using current configuration"
 fi
+
+# Prepare Player 2 config
+if [ "$MODE_NAME_P2" != "current" ]; then
+    echo -e "${YELLOW}Applying mode for Player 2: $MODE_NAME_P2${NC}"
+    python3 ai/modes.py "$MODE_NAME_P2" > /dev/null 2>&1
+    if [ $? -eq 0 ]; then
+        cp ai/config.py /tmp/vvw_configs/config_p2.py
+        echo -e "${GREEN}✓${NC} Player 2 config ready: ${YELLOW}$MODE_NAME_P2${NC}"
+    else
+        echo -e "${RED}✗${NC} Failed to apply mode for Player 2, using current config"
+        cp /tmp/vvw_configs/config_original.py /tmp/vvw_configs/config_p2.py
+        MODE_NAME_P2="current"
+    fi
+else
+    cp /tmp/vvw_configs/config_original.py /tmp/vvw_configs/config_p2.py
+    echo -e "${GREEN}✓${NC} Player 2 using current configuration"
+fi
+
+# Restore original config (so we don't modify the repo)
+cp /tmp/vvw_configs/config_original.py ai/config.py
+
 echo ""
 
 # ============================================================
 # START GAME
 # ============================================================
 echo -e "${BLUE}════════════════════════════════════════════════════════════${NC}"
-echo -e "${YELLOW}Map:${NC}  $MAP_NAME"
-echo -e "${YELLOW}Mode:${NC} $MODE_NAME"
+echo -e "${YELLOW}Map:${NC}         $MAP_NAME"
+echo -e "${YELLOW}Player 1:${NC}    $MODE_NAME_P1"
+echo -e "${YELLOW}Player 2:${NC}    $MODE_NAME_P2"
 echo -e "${BLUE}════════════════════════════════════════════════════════════${NC}"
 echo ""
 
@@ -163,10 +235,23 @@ echo -e "${GREEN}✅ Server running (PID: $SERVER_PID)${NC}"
 echo -e "${BLUE}🌐 Web interface: http://localhost:8080${NC}"
 echo ""
 
+# Get absolute path to project root
+PROJECT_ROOT="$(pwd)"
+
 # Start Player 1 (will be Vampires)
-echo -e "${YELLOW}🧛 Starting AI Player 1 (Vampires)...${NC}"
+echo -e "${YELLOW}🧛 Starting AI Player 1 (Vampires) - Mode: $MODE_NAME_P1...${NC}"
 sleep 1
-python3 ai/ai_player.py localhost 5555 > "$LOG_PLAYER1" 2>&1 &
+
+# Create wrapper script for Player 1
+cat > /tmp/vvw_configs/player1_wrapper.sh << WRAPPER_EOF
+#!/bin/bash
+cd "$PROJECT_ROOT"
+cp /tmp/vvw_configs/config_p1.py ai/config.py
+python3 ai/ai_player.py localhost 5555
+WRAPPER_EOF
+chmod +x /tmp/vvw_configs/player1_wrapper.sh
+
+/tmp/vvw_configs/player1_wrapper.sh > "$LOG_PLAYER1" 2>&1 &
 AI1_PID=$!
 
 sleep 2
@@ -174,6 +259,8 @@ if ! ps -p $AI1_PID > /dev/null 2>&1; then
     echo -e "${RED}❌ Player 1 failed to start${NC}"
     echo -e "${YELLOW}Check logs: $LOG_PLAYER1${NC}"
     kill $SERVER_PID 2>/dev/null
+    # Restore original config
+    cp /tmp/vvw_configs/config_original.py ai/config.py
     exit 1
 fi
 
@@ -181,9 +268,19 @@ echo -e "${GREEN}✅ Player 1 connected (PID: $AI1_PID)${NC}"
 echo ""
 
 # Start Player 2 (will be Werewolves)  
-echo -e "${YELLOW}🐺 Starting AI Player 2 (Werewolves)...${NC}"
+echo -e "${YELLOW}🐺 Starting AI Player 2 (Werewolves) - Mode: $MODE_NAME_P2...${NC}"
 sleep 1
-python3 ai/ai_player.py localhost 5555 > "$LOG_PLAYER2" 2>&1 &
+
+# Create wrapper script for Player 2
+cat > /tmp/vvw_configs/player2_wrapper.sh << WRAPPER_EOF
+#!/bin/bash
+cd "$PROJECT_ROOT"
+cp /tmp/vvw_configs/config_p2.py ai/config.py
+python3 ai/ai_player.py localhost 5555
+WRAPPER_EOF
+chmod +x /tmp/vvw_configs/player2_wrapper.sh
+
+/tmp/vvw_configs/player2_wrapper.sh > "$LOG_PLAYER2" 2>&1 &
 AI2_PID=$!
 
 sleep 2
@@ -191,6 +288,8 @@ if ! ps -p $AI2_PID > /dev/null 2>&1; then
     echo -e "${RED}❌ Player 2 failed to start${NC}"
     echo -e "${YELLOW}Check logs: $LOG_PLAYER2${NC}"
     kill $SERVER_PID $AI1_PID 2>/dev/null
+    # Restore original config
+    cp /tmp/vvw_configs/config_original.py ai/config.py
     exit 1
 fi
 
@@ -212,6 +311,9 @@ echo ""
 echo -e "${YELLOW}🧹 Cleaning up...${NC}"
 kill $SERVER_PID 2>/dev/null
 wait $SERVER_PID 2>/dev/null
+
+# Restore original config
+cp /tmp/vvw_configs/config_original.py ai/config.py
 
 echo -e "${GREEN}🏁 Game finished!${NC}"
 echo ""

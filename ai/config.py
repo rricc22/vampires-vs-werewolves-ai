@@ -36,12 +36,12 @@ SERVER_PORT = 5555
 # - 3: Fast, basic strategy
 # - 4: Balanced (default)
 # - 5: Deep, strong play (may timeout on complex positions)
-SEARCH_MAX_DEPTH = 10
+SEARCH_MAX_DEPTH = 4
 
 # Time limit per move in seconds (must be < 2.0 for server)
 # Recommended: 1.5-1.8 to leave buffer for network/processing
 # Set to 1.6 for safety margin (network latency + GC pauses)
-SEARCH_TIME_LIMIT = 2
+SEARCH_TIME_LIMIT = 1.6
 
 # Enable iterative deepening (searches depth 1, then 2, then 3, etc.)
 # Ensures we always have a move even if we run out of time
@@ -63,14 +63,14 @@ MAX_GROUPS_PER_TURN = 3
 # Minimum size before allowing a group to split
 # Prevents small groups from fragmenting further
 # Recommended: 10-15
-MIN_SPLIT_SIZE = 6
+MIN_SPLIT_SIZE = 12
 
 # Split ratios to consider when moving from a cell
 # [1.0] = always move everything (no splits, maximum concentration)
 # [1.0, 0.5] = move all OR half (allows strategic 2-group splits)
 # [1.0, 2/3, 0.5, 1/3] = more options (more fragmentation risk)
 # Recommended: [1.0] for defensive, [1.0, 0.5] for balanced
-SPLIT_RATIOS = [1.0, 0.6666666666666666, 0.5]
+SPLIT_RATIOS = [1.0, 0.5]
 
 
 # ============================================================
@@ -80,7 +80,7 @@ SPLIT_RATIOS = [1.0, 0.6666666666666666, 0.5]
 # 0.5 = 50% chance (aggressive), 0.7 = 70% (balanced), 0.8 = 80% (conservative)
 # Higher = fewer attacks, but more likely to win when we do attack
 # VERY AGGRESSIVE MODE: 0.4 allows 5v5 (50%) and even 4v5 (40%) attacks
-ATTACK_MIN_WIN_PROBABILITY = 0.2
+ATTACK_MIN_WIN_PROBABILITY = 0.65
 
 
 # ============================================================
