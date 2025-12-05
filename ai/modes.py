@@ -16,28 +16,28 @@ Usage from code:
 
 BALANCED = {
     # Search
-    "SEARCH_MAX_DEPTH": 4,
-    "SEARCH_TIME_LIMIT": 1.6,
-    
+    "SEARCH_MAX_DEPTH": 4,  # Optimal depth ✓
+    "SEARCH_TIME_LIMIT": 1.7,  # Slightly higher for better search ✓
+
     # Move generation
-    "MIN_GROUP_SIZE": 5,
-    "MAX_GROUPS_PER_TURN": 2,
-    "MIN_SPLIT_SIZE": 10,
-    "SPLIT_RATIOS": [1.0, 0.5],
-    "ATTACK_MIN_WIN_PROBABILITY": 0.2,
+    "MIN_GROUP_SIZE": 5,  # Good flexibility ✓
+    "MAX_GROUPS_PER_TURN": 2,  # Optimal tactical coordination ✓
+    "MIN_SPLIT_SIZE": 10,  # Prevents excessive fragmentation ✓
+    "SPLIT_RATIOS": [1.0, 0.5],  # Strategic splits allowed ✓
+    "ATTACK_MIN_WIN_PROBABILITY": 0.65,  # Well-balanced risk/reward ✓
 }
 
 AGGRESSIVE = {
     # Search
-    "SEARCH_MAX_DEPTH": 10,
-    "SEARCH_TIME_LIMIT": 2,
-    
+    "SEARCH_MAX_DEPTH": 4,  # 10 would timeout, keep at 4 ✓
+    "SEARCH_TIME_LIMIT": 1.7,  # Must be under 2.0 for server ✓
+
     # Move generation
-    "MIN_GROUP_SIZE": 6,
-    "MAX_GROUPS_PER_TURN": 3,
-    "MIN_SPLIT_SIZE": 6,
-    "SPLIT_RATIOS": [1.0, 2/3, 0.5],
-    "ATTACK_MIN_WIN_PROBABILITY": 0.2
+    "MIN_GROUP_SIZE": 5,  # Allow smaller groups for more flexibility ✓
+    "MAX_GROUPS_PER_TURN": 2,  # 3 creates too much branching ✓
+    "MIN_SPLIT_SIZE": 8,  # Lower to allow more tactical splits ✓
+    "SPLIT_RATIOS": [1.0, 0.5],
+    "ATTACK_MIN_WIN_PROBABILITY": 0.4  # More aggressive but not reckless ✓
 }
 
 DEFENSIVE = {
@@ -68,15 +68,15 @@ SPEED = {
 
 TACTICAL = {
     # Search
-    "SEARCH_MAX_DEPTH": 4,
-    "SEARCH_TIME_LIMIT": 1.6,
-    
+    "SEARCH_MAX_DEPTH": 4,  # Standard depth ✓
+    "SEARCH_TIME_LIMIT": 1.7,  # More time for complex calculations ✓
+
     # Move generation
-    "MIN_GROUP_SIZE": 6,
-    "MAX_GROUPS_PER_TURN": 3,
-    "MIN_SPLIT_SIZE": 12,
-    "SPLIT_RATIOS": [1.0, 0.5],
-    "ATTACK_MIN_WIN_PROBABILITY": 0.65,
+    "MIN_GROUP_SIZE": 5,  # More tactical flexibility ✓
+    "MAX_GROUPS_PER_TURN": 2,  # Optimal (3 is too slow) ✓
+    "MIN_SPLIT_SIZE": 10,  # Allow tactical positioning ✓
+    "SPLIT_RATIOS": [1.0, 0.5],  # Core tactical splits ✓
+    "ATTACK_MIN_WIN_PROBABILITY": 0.65,  # Balanced aggression ✓
 }
 
 EXPERIMENTAL = {

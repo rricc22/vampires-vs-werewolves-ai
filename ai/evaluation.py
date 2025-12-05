@@ -116,12 +116,13 @@ def evaluate_state(state: GameState) -> float:
     # Apply phase-based weights
     if phase == GamePhase.EARLY:
         # Early game: HUMANS ARE EVERYTHING
-        # Increased growth from 70% → 85%, reduced spatial from 20% → 5%
-        # This prevents center rushing and prioritizes human collection
+        # FIXED: Balanced weights (40% growth, 55% material) to reward CAPTURING humans
+        # Old bug: 85% growth + 10% material → approaching villages scored higher than capturing them
+        # New: Capturing a village must give more score than just moving adjacent to it
         total_score = (
-            growth_potential * 0.85 +        # Proximity to humans + accessible humans
+            growth_potential * 0.40 +        # Proximity to humans + accessible humans
             spatial_control * 0.05 +          # Minimal (no center control anymore)
-            population_differential * 0.10    # Watch population but don't obsess
+            population_differential * 0.55    # Reward capturing, not just approaching
         )
     elif phase == GamePhase.MID:
         # Mid game: Balance remaining humans with combat positioning

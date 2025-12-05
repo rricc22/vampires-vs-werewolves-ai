@@ -40,8 +40,8 @@ SEARCH_MAX_DEPTH = 4
 
 # Time limit per move in seconds (must be < 2.0 for server)
 # Recommended: 1.5-1.8 to leave buffer for network/processing
-# Set to 1.6 for safety margin (network latency + GC pauses)
-SEARCH_TIME_LIMIT = 1.6
+# Set to 1.7 for better search depth while maintaining safety ✓ OPTIMAL
+SEARCH_TIME_LIMIT = 1.7
 
 # Enable iterative deepening (searches depth 1, then 2, then 3, etc.)
 # Ensures we always have a move even if we run out of time
@@ -53,12 +53,12 @@ SEARCH_ITERATIVE_DEEPENING = True
 # ============================================================
 # Minimum group size - don't create groups smaller than this
 # Higher = less fragmentation, but less tactical flexibility
-# Recommended: 5-10
-MIN_GROUP_SIZE = 6
+# ✓ OPTIMAL: 5 provides good balance between concentration and flexibility
+MIN_GROUP_SIZE = 5
 
 # Maximum groups that can move simultaneously per turn
-# 1 = simple moves only, 2 = tactical coordination (default), 3 = complex multi-group
-MAX_GROUPS_PER_TURN = 3
+# 1 = simple moves only, 2 = tactical coordination ✓ OPTIMAL, 3 = complex multi-group (slower)
+MAX_GROUPS_PER_TURN = 2
 
 # Minimum size before allowing a group to split
 # Prevents small groups from fragmenting further
@@ -77,9 +77,9 @@ SPLIT_RATIOS = [1.0, 0.5]
 # BATTLE MECHANICS
 # ============================================================
 # Minimum win probability to attack humans/enemies
-# 0.5 = 50% chance (aggressive), 0.7 = 70% (balanced), 0.8 = 80% (conservative)
+# 0.5 = 50% chance (aggressive), 0.65 = 65% (balanced), 0.7 = 70% (safe), 0.8 = 80% (conservative)
 # Higher = fewer attacks, but more likely to win when we do attack
-# VERY AGGRESSIVE MODE: 0.4 allows 5v5 (50%) and even 4v5 (40%) attacks
+# ✓ OPTIMAL: 0.65 provides good balance between aggression and safety
 ATTACK_MIN_WIN_PROBABILITY = 0.65
 
 
@@ -127,9 +127,9 @@ EVAL_SMALL_GROUP_PENALTY = 100
 EVAL_RESOURCE_MAX_DISTANCE = 4
 
 # Minimum win probability to consider a human group "winnable"
-# Should match or be close to ATTACK_MIN_WIN_PROBABILITY
-# Old system: Used 0.7 for "high confidence"
-EVAL_RESOURCE_MIN_WIN_PROB = 0.7
+# Should match ATTACK_MIN_WIN_PROBABILITY for consistency
+# ✓ OPTIMAL: 0.65 aligns with attack threshold
+EVAL_RESOURCE_MIN_WIN_PROB = 0.65
 
 # Value per accessible winnable human group
 # Old: WEIGHT_HUMAN_PROXIMITY = 40 (complex distance weighting)
@@ -158,8 +158,8 @@ EVAL_RANDOM_NOISE = 0.5
 # This creates a directional incentive to move TOWARD humans
 # Formula: (human_count * weight) / (1 + distance)
 # Higher = more aggressive human collection
-# 50 = balanced (5-human village at dist 2 = ~83 points)
-EVAL_HUMAN_PROXIMITY_WEIGHT = 50
+# ✓ OPTIMAL: 60 encourages early expansion while maintaining strategic balance
+EVAL_HUMAN_PROXIMITY_WEIGHT = 60
 
 # Whether to use center control in early game
 # False = ignore center until mid game (recommended to prevent center rushing)
@@ -236,7 +236,7 @@ EXCESSIVE_GROUPS_THRESHOLD = EVAL_IDEAL_GROUP_COUNT + 1
 DEBUG_MOVE_GENERATION = False
 
 # Enable search statistics printing
-DEBUG_SEARCH_STATS = True
+DEBUG_SEARCH_STATS = False
 
 # Log evaluation details
 DEBUG_EVALUATION = False

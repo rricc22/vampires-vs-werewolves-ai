@@ -4,11 +4,12 @@ import random
 from itertools import product
 from game_state import GameState, Move, Species
 from config import (MIN_GROUP_SIZE, MAX_GROUPS_PER_TURN,
-                    MIN_SPLIT_SIZE, SPLIT_RATIOS, ATTACK_MIN_WIN_PROBABILITY)
+                    MIN_SPLIT_SIZE, SPLIT_RATIOS, ATTACK_MIN_WIN_PROBABILITY,
+                    DEBUG_MOVE_GENERATION)
 
 
 # Maximum moves to consider per group in multi-group combinations
-MAX_MOVES_PER_GROUP_COMBO = 15
+MAX_MOVES_PER_GROUP_COMBO = 5
 
 
 def calculate_battle_probability(attackers: int, defenders: int) -> float:
@@ -159,14 +160,22 @@ def generate_split_and_move_combos(state: GameState, x: int, y: int, count: int)
             move2_valid = True
 
             if tc1.humans > 0:
+                # Guaranteed conversion: attackers >= humans
+                is_guaranteed = half >= tc1.humans
                 win_prob = calculate_battle_probability(half, tc1.humans)
-                if win_prob < ATTACK_MIN_WIN_PROBABILITY:
+                if not is_guaranteed and win_prob < ATTACK_MIN_WIN_PROBABILITY:
                     move1_valid = False
+                    if DEBUG_MOVE_GENERATION:
+                        print(f"  Split move 1 FILTERED: {half} units vs {tc1.humans} humans (win prob {win_prob:.2%} < {ATTACK_MIN_WIN_PROBABILITY:.0%})")
 
             if tc2.humans > 0:
+                # Guaranteed conversion: attackers >= humans
+                is_guaranteed = other_half >= tc2.humans
                 win_prob = calculate_battle_probability(other_half, tc2.humans)
-                if win_prob < ATTACK_MIN_WIN_PROBABILITY:
+                if not is_guaranteed and win_prob < ATTACK_MIN_WIN_PROBABILITY:
                     move2_valid = False
+                    if DEBUG_MOVE_GENERATION:
+                        print(f"  Split move 2 FILTERED: {other_half} units vs {tc2.humans} humans (win prob {win_prob:.2%} < {ATTACK_MIN_WIN_PROBABILITY:.0%})")
 
             # Only add if both moves are valid
             if move1_valid and move2_valid:
@@ -220,7 +229,7 @@ def generate_all_moves(state: GameState, for_opponent: bool = False) -> List[Lis
     # Generate single-group moves for each group
     group_moves = []  # List of (group_info, moves_list)
     for x, y, count in groups:
-        moves = generate_moves_from_cell(state, x, y, count)
+        moves = generate_moves_from_cell(state, x, y, count, debug=DEBUG_MOVE_GENERATION)
         if moves:
             group_moves.append(((x, y, count), moves))
             # Add each single move as a combo
@@ -262,47 +271,48 @@ def generate_all_moves(state: GameState, for_opponent: bool = False) -> List[Lis
 def generate_moves_from_cell(state: GameState, x: int, y: int, count: int, debug: bool = False) -> List[Move]:
     """
     Generate all possible moves from a single cell.
-    
+
     FIXED: Reduced split ratios to prevent excessive fragmentation.
     Now uses configurable SPLIT_RATIOS (default: all, 2/3, 1/2) instead of (all, 3/4, 1/2, 1/4, 1).
     Also enforces MIN_GROUP_SIZE and MIN_SPLIT_SIZE to avoid creating tiny ineffective groups.
-    
+
     Args:
         state: Current game state
         x, y: Source cell coordinates (in our internal format: x=row, y=col)
         count: Number of creatures in the cell
         debug: Enable debug logging
-        
+
     Returns:
         List of possible moves from this cell
     """
     moves = []
-    
+
     if debug:
         print(f"\n=== Generating moves from cell ({x},{y}) with {count} units ===")
-    
+        print(f"    Current ATTACK_MIN_WIN_PROBABILITY threshold: {ATTACK_MIN_WIN_PROBABILITY:.0%}")
+
     # Try all 8 directions
     for dx, dy in GameState.DIRECTIONS:
         target_x = x + dx
         target_y = y + dy
-        
+
         # Check if target is valid
         if not (0 <= target_x < state.rows and 0 <= target_y < state.cols):
             continue
-        
+
         # Check target cell contents
         target_cell = state.board[target_x][target_y]
-        
+
         if debug:
             print(f"  Direction ({dx},{dy}) → target ({target_x},{target_y}): H={target_cell.humans} V={target_cell.vampires} W={target_cell.werewolves}")
-        
+
         # Generate moves with different creature counts
         # FIXED: Use configured split ratios to reduce fragmentation
         move_amounts = set()
-        
+
         # Always include moving all units
         move_amounts.add(count)
-        
+
         # Only allow splits if we have enough units
         if count >= MIN_SPLIT_SIZE:
             for ratio in SPLIT_RATIOS:
@@ -312,29 +322,34 @@ def generate_moves_from_cell(state: GameState, x: int, y: int, count: int, debug
                     remaining = count - amount
                     if remaining >= MIN_GROUP_SIZE or remaining == 0:
                         move_amounts.add(amount)
-        
+
         # If we're too small to split, just move all or nothing
         # (the "all" case is already added)
-        
+
         for amount in move_amounts:
             if amount > 0 and amount <= count:
                 # Filter out risky attacks on human groups
                 if target_cell.humans > 0:
+                    # Guaranteed conversion: attackers >= humans (per game rules)
+                    is_guaranteed = amount >= target_cell.humans
                     win_prob = calculate_battle_probability(amount, target_cell.humans)
-                    # Only attack humans if we meet minimum win probability from config
-                    # This prevents weak attacks that lead to pyrrhic victories
-                    if win_prob < ATTACK_MIN_WIN_PROBABILITY:
+
+                    # Allow attack if guaranteed OR meets minimum win probability
+                    if not is_guaranteed and win_prob < ATTACK_MIN_WIN_PROBABILITY:
                         if debug:
-                            print(f"    FILTERED: {amount} units vs {target_cell.humans} humans (win prob {win_prob:.2%} < {ATTACK_MIN_WIN_PROBABILITY:.0%})")
+                            print(f"    FILTERED: {amount} units vs {target_cell.humans} humans (win prob {win_prob:.2%} < threshold {ATTACK_MIN_WIN_PROBABILITY:.0%})")
                         continue
                     elif debug:
-                        print(f"    ALLOWED: {amount} units vs {target_cell.humans} humans (win prob {win_prob:.2%})")
-                
+                        if is_guaranteed:
+                            print(f"    ALLOWED (GUARANTEED): {amount} units vs {target_cell.humans} humans (attackers >= humans)")
+                        else:
+                            print(f"    ALLOWED: {amount} units vs {target_cell.humans} humans (win prob {win_prob:.2%} >= threshold {ATTACK_MIN_WIN_PROBABILITY:.0%})")
+
                 moves.append(Move(x, y, target_x, target_y, amount))
-    
+
     if debug:
         print(f"  Total moves generated: {len(moves)}")
-    
+
     return moves
 
 

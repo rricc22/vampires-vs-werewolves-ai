@@ -238,20 +238,47 @@ echo ""
 # Get absolute path to project root
 PROJECT_ROOT="$(pwd)"
 
+# Create temporary Python launcher scripts that import the right config
+cat > /tmp/vvw_configs/launch_p1.py << 'PYEOF'
+import sys
+import importlib.util
+
+# Load player 1's config
+spec = importlib.util.spec_from_file_location("config", "/tmp/vvw_configs/config_p1.py")
+config = importlib.util.module_from_spec(spec)
+sys.modules['config'] = config
+spec.loader.exec_module(config)
+
+# Now import and run the AI
+sys.path.insert(0, sys.argv[1])  # Add project ai/ directory to path
+from ai_player import play_game
+import argparse
+args = argparse.Namespace(ip=sys.argv[2], port=int(sys.argv[3]), name='AlphaBetaAI_v1')
+play_game(args)
+PYEOF
+
+cat > /tmp/vvw_configs/launch_p2.py << 'PYEOF'
+import sys
+import importlib.util
+
+# Load player 2's config
+spec = importlib.util.spec_from_file_location("config", "/tmp/vvw_configs/config_p2.py")
+config = importlib.util.module_from_spec(spec)
+sys.modules['config'] = config
+spec.loader.exec_module(config)
+
+# Now import and run the AI
+sys.path.insert(0, sys.argv[1])  # Add project ai/ directory to path
+from ai_player import play_game
+import argparse
+args = argparse.Namespace(ip=sys.argv[2], port=int(sys.argv[3]), name='AlphaBetaAI_v1')
+play_game(args)
+PYEOF
+
 # Start Player 1 (will be Vampires)
 echo -e "${YELLOW}🧛 Starting AI Player 1 (Vampires) - Mode: $MODE_NAME_P1...${NC}"
 sleep 1
-
-# Create wrapper script for Player 1
-cat > /tmp/vvw_configs/player1_wrapper.sh << WRAPPER_EOF
-#!/bin/bash
-cd "$PROJECT_ROOT"
-cp /tmp/vvw_configs/config_p1.py ai/config.py
-python3 ai/ai_player.py localhost 5555
-WRAPPER_EOF
-chmod +x /tmp/vvw_configs/player1_wrapper.sh
-
-/tmp/vvw_configs/player1_wrapper.sh > "$LOG_PLAYER1" 2>&1 &
+python3 /tmp/vvw_configs/launch_p1.py "$PROJECT_ROOT/ai" localhost 5555 > "$LOG_PLAYER1" 2>&1 &
 AI1_PID=$!
 
 sleep 2
@@ -270,17 +297,7 @@ echo ""
 # Start Player 2 (will be Werewolves)  
 echo -e "${YELLOW}🐺 Starting AI Player 2 (Werewolves) - Mode: $MODE_NAME_P2...${NC}"
 sleep 1
-
-# Create wrapper script for Player 2
-cat > /tmp/vvw_configs/player2_wrapper.sh << WRAPPER_EOF
-#!/bin/bash
-cd "$PROJECT_ROOT"
-cp /tmp/vvw_configs/config_p2.py ai/config.py
-python3 ai/ai_player.py localhost 5555
-WRAPPER_EOF
-chmod +x /tmp/vvw_configs/player2_wrapper.sh
-
-/tmp/vvw_configs/player2_wrapper.sh > "$LOG_PLAYER2" 2>&1 &
+python3 /tmp/vvw_configs/launch_p2.py "$PROJECT_ROOT/ai" localhost 5555 > "$LOG_PLAYER2" 2>&1 &
 AI2_PID=$!
 
 sleep 2
