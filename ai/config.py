@@ -63,7 +63,7 @@ MAX_GROUPS_PER_TURN = 2
 # Minimum size before allowing a group to split
 # Prevents small groups from fragmenting further
 # Recommended: 10-15
-MIN_SPLIT_SIZE = 12
+MIN_SPLIT_SIZE = 8
 
 # Split ratios to consider when moving from a cell
 # [1.0] = always move everything (no splits, maximum concentration)
@@ -80,7 +80,7 @@ SPLIT_RATIOS = [1.0, 0.5]
 # 0.5 = 50% chance (aggressive), 0.65 = 65% (balanced), 0.7 = 70% (safe), 0.8 = 80% (conservative)
 # Higher = fewer attacks, but more likely to win when we do attack
 # ✓ OPTIMAL: 0.65 provides good balance between aggression and safety
-ATTACK_MIN_WIN_PROBABILITY = 0.65
+ATTACK_MIN_WIN_PROBABILITY = 0.4
 
 
 # ============================================================
