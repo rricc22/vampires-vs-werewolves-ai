@@ -1,0 +1,66 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{Abstract}{3}{Doc-Start}%
+\contentsline {section}{\numberline {1}Introduction}{4}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Project Context}{4}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Game Rules Overview}{4}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Project Objectives}{4}{subsection.1.3}%
+\contentsline {section}{\numberline {2}System Architecture}{5}{section.2}%
+\contentsline {subsection}{\numberline {2.1}High-Level Design}{5}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Component Descriptions}{5}{subsection.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.1}Client Module (client.py)}{5}{subsubsection.2.2.1}%
+\contentsline {subsubsection}{\numberline {2.2.2}Game State (game\_state.py)}{6}{subsubsection.2.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.3}AI Player (ai\_player.py)}{6}{subsubsection.2.2.3}%
+\contentsline {subsection}{\numberline {2.3}Data Flow}{6}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Code Metrics}{6}{subsection.2.4}%
+\contentsline {section}{\numberline {3}Algorithms and Techniques}{7}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Alpha-Beta Pruning with Iterative Deepening}{7}{subsection.3.1}%
+\contentsline {subsubsection}{\numberline {3.1.1}Algorithm Overview}{8}{subsubsection.3.1.1}%
+\contentsline {subsubsection}{\numberline {3.1.2}Move Ordering}{8}{subsubsection.3.1.2}%
+\contentsline {subsubsection}{\numberline {3.1.3}Time Management}{9}{subsubsection.3.1.3}%
+\contentsline {subsection}{\numberline {3.2}Move Generation}{9}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}Single-Group Moves}{9}{subsubsection.3.2.1}%
+\contentsline {subsubsection}{\numberline {3.2.2}Multi-Group Coordination}{9}{subsubsection.3.2.2}%
+\contentsline {subsubsection}{\numberline {3.2.3}Battle Probability Calculation}{10}{subsubsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.3}Evaluation Function}{10}{subsection.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.1}Game Phase Detection}{10}{subsubsection.3.3.1}%
+\contentsline {subsubsection}{\numberline {3.3.2}Evaluation Components}{10}{subsubsection.3.3.2}%
+\contentsline {paragraph}{1. Material Differential}{10}{equation.3.2}%
+\contentsline {paragraph}{2. Fragmentation Penalty}{11}{equation.3.3}%
+\contentsline {paragraph}{3. Small Group Penalty}{11}{equation.3.4}%
+\contentsline {paragraph}{4. Resource Access}{11}{equation.3.5}%
+\contentsline {paragraph}{5. Tactical Positioning}{11}{equation.3.6}%
+\contentsline {subsubsection}{\numberline {3.3.3}Phase-Based Weights}{11}{subsubsection.3.3.3}%
+\contentsline {section}{\numberline {4}Implementation Details}{11}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Key Design Decisions}{11}{subsection.4.1}%
+\contentsline {subsubsection}{\numberline {4.1.1}Anti-Fragmentation Philosophy}{11}{subsubsection.4.1.1}%
+\contentsline {subsubsection}{\numberline {4.1.2}Conservative Attack Filter}{12}{subsubsection.4.1.2}%
+\contentsline {subsubsection}{\numberline {4.1.3}Limited Split Ratios}{12}{subsubsection.4.1.3}%
+\contentsline {subsection}{\numberline {4.2}Configuration System}{12}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Mode Presets}{12}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Loop Detection}{13}{subsection.4.4}%
+\contentsline {section}{\numberline {5}Results and Critical Analysis}{13}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Performance Metrics}{13}{subsection.5.1}%
+\contentsline {subsubsection}{\numberline {5.1.1}Search Performance}{13}{subsubsection.5.1.1}%
+\contentsline {subsubsection}{\numberline {5.1.2}Attack Probability Distribution}{14}{subsubsection.5.1.2}%
+\contentsline {subsection}{\numberline {5.2}Tournament Results}{14}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Critical Failure Analysis}{14}{subsection.5.3}%
+\contentsline {subsubsection}{\numberline {5.3.1}Failure 1: Excessive Conservatism}{14}{subsubsection.5.3.1}%
+\contentsline {subsubsection}{\numberline {5.3.2}Failure 2: Over-Penalized Splitting}{15}{subsubsection.5.3.2}%
+\contentsline {subsubsection}{\numberline {5.3.3}Failure 3: Static Strategy}{15}{subsubsection.5.3.3}%
+\contentsline {subsection}{\numberline {5.4}What Worked}{15}{subsection.5.4}%
+\contentsline {subsection}{\numberline {5.5}Parameter Sensitivity Analysis}{16}{subsection.5.5}%
+\contentsline {section}{\numberline {6}Visualizations}{16}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Evaluation Function Breakdown}{16}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Game State Visualization Example}{17}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Search Tree Exploration}{17}{subsection.6.3}%
+\contentsline {section}{\numberline {7}Future Work}{17}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Immediate Improvements}{17}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Advanced Techniques}{18}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Architectural Improvements}{18}{subsection.7.3}%
+\contentsline {section}{\numberline {8}Conclusion}{18}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Summary}{18}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Lessons Learned}{18}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Final Thoughts}{19}{subsection.8.3}%
+\contentsline {section}{\numberline {A}Configuration Parameters Reference}{20}{appendix.A}%
+\contentsline {section}{\numberline {B}Battle Probability Table}{20}{appendix.B}%
+\contentsline {section}{\numberline {C}Code References}{20}{appendix.C}%
